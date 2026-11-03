@@ -1,0 +1,14 @@
+# Values may name a virtual-environment directory or its bin/python executable.
+[envs]
+main = "envs/main/venv"
+laion = "envs/laion/venv"
+fgaesq = "envs/fgaesq/venv"
+sam = "envs/sam/venv"
+venus = "envs/venus/venv"
+
+[assets]
+laion_head = "envs/laion/weights/sa_0_4_vit_l_14_linear.pth"
+fgaesq_checkpoint = "envs/fgaesq/weights/FGAesQ.pt"
+fgaesq_source = "envs/fgaesq/FGAesQ_Inference"
+sam_checkpoint = "envs/sam/weights/sam_vit_b_01ec64.pth"
+venus_model = "envs/venus/weights/Venus-Q-Stage2"

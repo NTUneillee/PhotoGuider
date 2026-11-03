@@ -1,0 +1,16 @@
+# Exact versions from the Venus release environment that produced the shipped outputs.
+accelerate==0.27.2
+bitsandbytes==0.49.2
+einops==0.8.2
+matplotlib==3.10.9
+numpy==2.4.4
+pillow==12.2.0
+requests==2.34.2
+safetensors==0.7.0
+sentencepiece==0.2.1
+tiktoken==0.13.0
+tokenizers==0.15.2
+torch==2.11.0+cu128
+torchvision==0.26.0+cu128
+transformers==4.37.2
+transformers-stream-generator==0.0.4

@@ -1,0 +1,10 @@
+# Exact versions from the release environment that produced the shipped numbers.
+numpy==2.0.1
+pandas==3.0.2
+scipy==1.17.1
+pyarrow==23.0.1
+opencv-python-headless==4.13.0.92
+pillow==11.2.1
+torch==2.11.0+cu128
+torchvision==0.26.0+cu128
+segment-anything @ git+https://github.com/facebookresearch/segment-anything.git@dca509fe793f601edb92606367a655c15ac00fdf

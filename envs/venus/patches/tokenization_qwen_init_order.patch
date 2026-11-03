@@ -1,0 +1,19 @@
+--- a/tokenization_qwen.py
++++ b/tokenization_qwen.py
+@@ -117,7 +117,6 @@
+         quad_end_tag='</quad>',
+         **kwargs,
+     ):
+-        super().__init__(**kwargs)
+         self.image_start_tag = image_start_tag
+         self.image_end_tag = image_end_tag
+         self.image_pad_tag = image_pad_tag
+@@ -179,6 +178,8 @@
+         self.im_start_id = self.special_tokens[IMSTART]
+         self.im_end_id = self.special_tokens[IMEND]
+ 
++        super().__init__(**kwargs)
++
+     def __getstate__(self):
+         # for pickle lovers
+         state = self.__dict__.copy()

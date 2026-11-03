@@ -1,0 +1,1007 @@
+{
+ "source": "https://polyhaven.com (CC0)",
+ "resolution": "8k",
+ "scenes": {
+  "abandoned_hall_01": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/abandoned_hall_01_8k.hdr",
+   "md5": "0edcc58a7d295dac04581938f9a77ffe",
+   "size": 102051896,
+   "jpg_sha256": "5509417630568a3fb458c59d33b07a6fede2f08aeab1d5b7ce9f60c896d8d560",
+   "direction": {
+    "pan": 315.0,
+    "tilt": 0.0
+   }
+  },
+  "abandoned_hopper_terminal_04": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/abandoned_hopper_terminal_04_8k.hdr",
+   "md5": "8dccb51ec4acc5b295180e46fd33e024",
+   "size": 102555774,
+   "jpg_sha256": "fd30f99970e5399a868d420b47d51e2a55c9f7589dc0ab1344f164003efdc3f7",
+   "direction": {
+    "pan": 225.0,
+    "tilt": 0.0
+   }
+  },
+  "air_museum_playground": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/air_museum_playground_8k.hdr",
+   "md5": "db1de510a43d07c3d8097afef5cfae9a",
+   "size": 101379581,
+   "jpg_sha256": "c3f1434d60ca3de1527741f04f0eb1a6e34dd6a8f0d36136c3ad95f1a0ea633d",
+   "direction": {
+    "pan": 165.0,
+    "tilt": 0.0
+   }
+  },
+  "autoshop_01": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/autoshop_01_8k.hdr",
+   "md5": "d1c051f65a8231bbca57231e9f847d7b",
+   "size": 101819437,
+   "jpg_sha256": "d50d2fbbbdf91b2bce820a7ebcf60df17ccdb493f3cbb778104bd420ea39109b",
+   "direction": {
+    "pan": 75.0,
+    "tilt": 0.0
+   }
+  },
+  "autumn_forest_01": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/autumn_forest_01_8k.hdr",
+   "md5": "29d46ea2a6af6ed179bbd2da36cc4731",
+   "size": 112734426,
+   "jpg_sha256": "d5284593bf90320b66635f560365fa97e8ce6aecc256cbae8d8da8a967edc68b",
+   "direction": {
+    "pan": 90.0,
+    "tilt": -15.0
+   }
+  },
+  "autumn_ground": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/autumn_ground_8k.hdr",
+   "md5": "6054b0ab4eb66d1652bd4d237ce67232",
+   "size": 110396626,
+   "jpg_sha256": "1954397d5d2bbf5f217147c1c39be82724150bd473456fca4fb7eb21b21b8da0",
+   "direction": {
+    "pan": 345.0,
+    "tilt": 0.0
+   }
+  },
+  "autumn_meadow": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/autumn_meadow_8k.hdr",
+   "md5": "a2dcea28fab2e35fe3e173a48d48684f",
+   "size": 101715202,
+   "jpg_sha256": "4f896c8fd3ab2aa6cae544be7caefef018202c8c21e742553e795aa10e4f29be",
+   "direction": {
+    "pan": 240.0,
+    "tilt": 15.0
+   }
+  },
+  "ballroom": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/ballroom_8k.hdr",
+   "md5": "48d14d1e9705dcc32623ce2861ad5271",
+   "size": 98460696,
+   "jpg_sha256": "ce62dee4228e9eb056ce92ba2c8de10d81b69f5903e53b80079d7cee014d7bff",
+   "direction": {
+    "pan": 15.0,
+    "tilt": -15.0
+   }
+  },
+  "birchwood": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/birchwood_8k.hdr",
+   "md5": "64e2c9212be52a8bc5f2f0442cad0c4e",
+   "size": 93416557,
+   "jpg_sha256": "edfe8a4d31701d343640fa20b704da03925ec82ba669ab190e852cf826ad4322",
+   "direction": {
+    "pan": 45.0,
+    "tilt": 0.0
+   }
+  },
+  "blinds": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/blinds_8k.hdr",
+   "md5": "8d92a6852f4406bd6091d19177b5ad9e",
+   "size": 82499987,
+   "jpg_sha256": "3b7461673de29b0e9101f6b4b96bb98ff4547b3e61ffb13c61d11fde64d648b4",
+   "direction": {
+    "pan": 30.0,
+    "tilt": -15.0
+   }
+  },
+  "blue_grotto": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/blue_grotto_8k.hdr",
+   "md5": "e059d91c5ce9758ba12fb494892bf535",
+   "size": 111075151,
+   "jpg_sha256": "73e4aba18c51838d6167950d94501dd05c3bff31388873441f6b01c8a43420da",
+   "direction": {
+    "pan": 315.0,
+    "tilt": 0.0
+   }
+  },
+  "bush_restaurant": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/bush_restaurant_8k.hdr",
+   "md5": "5eceb9326d02a09236a9817c09366e04",
+   "size": 102162041,
+   "jpg_sha256": "e58eb29ce48c572996743b036d32b9607f4654bbdf93490afe0ec65651cb3d23",
+   "direction": {
+    "pan": 75.0,
+    "tilt": 0.0
+   }
+  },
+  "castel_st_angelo_roof": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/castel_st_angelo_roof_8k.hdr",
+   "md5": "3ae4805db05c7ab4c5117fba83c85e03",
+   "size": 102847872,
+   "jpg_sha256": "66074fc9e940300356cd91e31ddfbbe96b0e055db501898c7c333628be880228",
+   "direction": {
+    "pan": 45.0,
+    "tilt": 0.0
+   }
+  },
+  "charolettenbrunn_park": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/charolettenbrunn_park_8k.hdr",
+   "md5": "87c62d46c1a17ac6f17db840bafbf78a",
+   "size": 110373044,
+   "jpg_sha256": "634e95b1315e6a41e405f8b1485f4c81879f1b2efd3d8066b47f85a7efcefeb5",
+   "direction": {
+    "pan": 240.0,
+    "tilt": 0.0
+   }
+  },
+  "cloudy_cliffside_road": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/cloudy_cliffside_road_8k.hdr",
+   "md5": "2d78321d51a8e96f88bc0afe328e4621",
+   "size": 103810588,
+   "jpg_sha256": "0a76874b3ad6cfabf7eb0b086bc1537e2dca8a0968ff6b0d70afc44cbf653efd",
+   "direction": {
+    "pan": 285.0,
+    "tilt": -15.0
+   }
+  },
+  "cloudy_vondelpark": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/cloudy_vondelpark_8k.hdr",
+   "md5": "57118c094e908c098428ab788b329381",
+   "size": 109009782,
+   "jpg_sha256": "33fb88f60cb08ff6d7d9a08e6d0cd694ce3bbcec3f5cace0708e4d0e7d54ad28",
+   "direction": {
+    "pan": 210.0,
+    "tilt": 0.0
+   }
+  },
+  "colorful_studio": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/colorful_studio_8k.hdr",
+   "md5": "6198328b144126916135d792bf299a42",
+   "size": 102459746,
+   "jpg_sha256": "768e8c38f695cb51968afde545c98d28b9830c4c64572380a522f85330059368",
+   "direction": {
+    "pan": 150.0,
+    "tilt": -15.0
+   }
+  },
+  "construction_yard": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/construction_yard_8k.hdr",
+   "md5": "51610a28e9ca3a0ee0eddf27de1a1724",
+   "size": 100608579,
+   "jpg_sha256": "e84c0b02a70d98582ccc9385d0a4904fb0d4715444f6c04ee3f742e937c71c0c",
+   "direction": {
+    "pan": 120.0,
+    "tilt": 0.0
+   }
+  },
+  "crosswalk": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/crosswalk_8k.hdr",
+   "md5": "7fae7ae3e85dd7b35f537dd1dfffd40d",
+   "size": 101416316,
+   "jpg_sha256": "2873736c3fc6017dc6cd3cc789f2f0f421348204f7cb7b280423fef2d5eaf9a2",
+   "direction": {
+    "pan": 15.0,
+    "tilt": 0.0
+   }
+  },
+  "dam_wall": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/dam_wall_8k.hdr",
+   "md5": "2c4630ad813d29c5243face4840de2e6",
+   "size": 98598988,
+   "jpg_sha256": "21dc7b4eb84c17a11faff6cc5f5be162beca8f883bfff702cddd80b4f3e99a77",
+   "direction": {
+    "pan": 315.0,
+    "tilt": 0.0
+   }
+  },
+  "dancing_hall": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/dancing_hall_8k.hdr",
+   "md5": "38e024afc2cdb79413d8ffba1633d0b4",
+   "size": 101338649,
+   "jpg_sha256": "02063a26563f5992d303c00ce2cc7a1796ca924b84fd902953c08188df3835e1",
+   "direction": {
+    "pan": 165.0,
+    "tilt": 0.0
+   }
+  },
+  "decor_shop": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/decor_shop_8k.hdr",
+   "md5": "3caad8ea99e5602d68d7df4df02b97af",
+   "size": 97083874,
+   "jpg_sha256": "3c62653d9e85ce192b16c1855a317b5213b7357a5c7e53503ab64fa4f9fc4e01",
+   "direction": {
+    "pan": 240.0,
+    "tilt": 0.0
+   }
+  },
+  "docklands_01": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/docklands_01_8k.hdr",
+   "md5": "85c35b222a69f66eb9b63550f87c9c5d",
+   "size": 97267007,
+   "jpg_sha256": "f885eaa69c421506c7c0dd467743c7084c888a1b52df0cf7d8c3ffe46cc76ef0",
+   "direction": {
+    "pan": 300.0,
+    "tilt": 0.0
+   }
+  },
+  "docklands_02": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/docklands_02_8k.hdr",
+   "md5": "62ec095e6739d35ebc3fa273f4b74204",
+   "size": 99795701,
+   "jpg_sha256": "5d088c64ce79b95f07e7ae3aa3e5dd8f9b2d48a0cef9eaeca9298f00f42cef6f",
+   "direction": {
+    "pan": 120.0,
+    "tilt": 0.0
+   }
+  },
+  "dusseldorf_bridge": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/dusseldorf_bridge_8k.hdr",
+   "md5": "03676b549d7769288fc6e727477e8231",
+   "size": 94214839,
+   "jpg_sha256": "cdd4e216ad755154c595dabe804ee82140f19aa98c00856eeb08533bdeeb696e",
+   "direction": {
+    "pan": 30.0,
+    "tilt": -15.0
+   }
+  },
+  "epping_forest_02": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/epping_forest_02_8k.hdr",
+   "md5": "42028167a297bdff2f619990022acbd3",
+   "size": 109050026,
+   "jpg_sha256": "61ce1019170fa7ea65badfc0a88a54ca2c0eca4530c2ad3cdeda1126151e1137",
+   "direction": {
+    "pan": 225.0,
+    "tilt": 0.0
+   }
+  },
+  "evening_meadow": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/evening_meadow_8k.hdr",
+   "md5": "5c75f21f9f31178e36bfb14724f04a97",
+   "size": 105296877,
+   "jpg_sha256": "62f831186fc99021b461b6cbc32c4add827c31d4971e0104ba804e9b2516f911",
+   "direction": {
+    "pan": 210.0,
+    "tilt": 0.0
+   }
+  },
+  "fireplace": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/fireplace_8k.hdr",
+   "md5": "beba79b953b05528acbb95669b835d95",
+   "size": 92397030,
+   "jpg_sha256": "0e9e5a4a26fc5da61e3e43ecdaad61ba9b9cac19f6bd92030abe93f788aa1604",
+   "direction": {
+    "pan": 0.0,
+    "tilt": 0.0
+   }
+  },
+  "forgotten_miniland": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/forgotten_miniland_8k.hdr",
+   "md5": "0a636ebf4a4b724a91ebc301fb81f923",
+   "size": 98115821,
+   "jpg_sha256": "0cbdc5c067b2f9eea9f8d5ff621809658571a848867915d19c487d3e73540238",
+   "direction": {
+    "pan": 225.0,
+    "tilt": 0.0
+   }
+  },
+  "gamrig": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/gamrig_8k.hdr",
+   "md5": "161884053e8aca2804bc16d381795a49",
+   "size": 100919691,
+   "jpg_sha256": "99b632405511ee539f9c2f48944345fa43b4ee01fdc83a0fa508efc890c9a91e",
+   "direction": {
+    "pan": 120.0,
+    "tilt": -15.0
+   }
+  },
+  "georgentor": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/georgentor_8k.hdr",
+   "md5": "7f747de793d2e6a36f62cbdaba66a5bc",
+   "size": 103431283,
+   "jpg_sha256": "722ae7d5cb9525d40ffdfe3b223dcbf9e36649dd340ad7089f70cd674d36ba14",
+   "direction": {
+    "pan": 225.0,
+    "tilt": 0.0
+   }
+  },
+  "goegap": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/goegap_8k.hdr",
+   "md5": "38d7d9923d6ed1dd410ba01d186bbbfb",
+   "size": 89401111,
+   "jpg_sha256": "8506fa6c221dc6dfaa97e11097f930385fae87abd55e3c3181712a873655f6ac",
+   "direction": {
+    "pan": 180.0,
+    "tilt": 0.0
+   }
+  },
+  "golden_bay": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/golden_bay_8k.hdr",
+   "md5": "3eb923630611f12d0dfd77eb02f37a75",
+   "size": 87576700,
+   "jpg_sha256": "1378e2d38deb55cca7c389e106781c577dbac05e72114168583fba7096e137bf",
+   "direction": {
+    "pan": 105.0,
+    "tilt": 0.0
+   }
+  },
+  "gothic_manor_01": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/gothic_manor_01_8k.hdr",
+   "md5": "656e0a18b8f6d7e236620955b5c43143",
+   "size": 105425693,
+   "jpg_sha256": "885bca6366b5165ec6189d4524e4addcc7f66b0aa2ef80c5f4096235fb4fa87f",
+   "direction": {
+    "pan": 75.0,
+    "tilt": -15.0
+   }
+  },
+  "greenwich_park": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/greenwich_park_8k.hdr",
+   "md5": "39a3a1fb3abe83a8b53e5c05bf314d5d",
+   "size": 109434404,
+   "jpg_sha256": "2933afae9d28a2bdb34f8d10ae07c8e07c98057b185c39302f2c4fad8dab76ce",
+   "direction": {
+    "pan": 180.0,
+    "tilt": 0.0
+   }
+  },
+  "gym_entrance": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/gym_entrance_8k.hdr",
+   "md5": "d63d6858e5fee37530792d8511d36e34",
+   "size": 98767390,
+   "jpg_sha256": "3cb6d952e7153cc189eb387db047adf5e11d41dfe2e0f985b2f7dc30c448b229",
+   "direction": {
+    "pan": 210.0,
+    "tilt": 15.0
+   }
+  },
+  "hamburg_hbf": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/hamburg_hbf_8k.hdr",
+   "md5": "8284fc6fc7abcca805da1ef46eb2af16",
+   "size": 102710785,
+   "jpg_sha256": "28166a8bf1c422035becdc5c51ac83df4ef0796b7dc2a4ca3a309e6959b523f0",
+   "direction": {
+    "pan": 210.0,
+    "tilt": 15.0
+   }
+  },
+  "hansaplatz": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/hansaplatz_8k.hdr",
+   "md5": "36d38ac3e7842d39aec79258ba9d8f3c",
+   "size": 105244718,
+   "jpg_sha256": "12b51f509ef309edddfc13c671d657dbb4570667d77ba652fd3f004597f347dd",
+   "direction": {
+    "pan": 60.0,
+    "tilt": 15.0
+   }
+  },
+  "illovo_beach_balcony": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/illovo_beach_balcony_8k.hdr",
+   "md5": "f0ae2654036ca8bbd63bbd319a3b498b",
+   "size": 97726489,
+   "jpg_sha256": "359709a538aac1630ebc1d2da72b8934137aa7b1ae454313385af272d9998b98",
+   "direction": {
+    "pan": 90.0,
+    "tilt": -15.0
+   }
+  },
+  "industrial_pipe_and_valve_01": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/industrial_pipe_and_valve_01_8k.hdr",
+   "md5": "932c76a7705a91239fb25e2e6a483a97",
+   "size": 104914009,
+   "jpg_sha256": "324617880c9594d064e95ef2759f40bec355db9d35e8b15a9f07a9f123d342b4",
+   "direction": {
+    "pan": 15.0,
+    "tilt": 15.0
+   }
+  },
+  "je_gray_02": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/je_gray_02_8k.hdr",
+   "md5": "428cb52d55d2d90f97e5a517a4d818d1",
+   "size": 113334622,
+   "jpg_sha256": "9eaf6617f0a41b4184b56910cf9458ef8a767c796cb723cb08ddbf5f0270b07b",
+   "direction": {
+    "pan": 90.0,
+    "tilt": 15.0
+   }
+  },
+  "kiara_interior": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/kiara_interior_8k.hdr",
+   "md5": "438a35d66c94e40100ab379873f6d898",
+   "size": 102455857,
+   "jpg_sha256": "97518db89e57247769d924dd3dae925b2585912b953fe95c4d0cfbb90332ceef",
+   "direction": {
+    "pan": 330.0,
+    "tilt": -15.0
+   }
+  },
+  "konigsallee": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/konigsallee_8k.hdr",
+   "md5": "af115c5f11e6bfb234157b57e64d2fb8",
+   "size": 96537608,
+   "jpg_sha256": "86b275e2c242a4187b771d3b42da0356341c43a760df2e8dd46fe0c673437fe9",
+   "direction": {
+    "pan": 45.0,
+    "tilt": 0.0
+   }
+  },
+  "lakeside": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/lakeside_8k.hdr",
+   "md5": "18de1e6e5dc17f26d2123c54ab9aea3b",
+   "size": 97267376,
+   "jpg_sha256": "33fe68753db28fe06e831f7a99108edd8036e52ea6c989a02a3e139f70b87a24",
+   "direction": {
+    "pan": 240.0,
+    "tilt": -15.0
+   }
+  },
+  "lakeside_sunrise": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/lakeside_sunrise_8k.hdr",
+   "md5": "d4af45516ddb80aa09bd27d28664263a",
+   "size": 98647139,
+   "jpg_sha256": "4d522973221a720c51d45be24b02beb661c0a290b0c6a2480fc0d31d30244593",
+   "direction": {
+    "pan": 120.0,
+    "tilt": 0.0
+   }
+  },
+  "little_paris_under_tower": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/little_paris_under_tower_8k.hdr",
+   "md5": "38920ef32ab85c58cdc18d370448f2c6",
+   "size": 106098384,
+   "jpg_sha256": "2e3639ed08c2d65aca4eab68e761c7dea3b4e470d124c514b84317a596ff5059",
+   "direction": {
+    "pan": 210.0,
+    "tilt": 0.0
+   }
+  },
+  "lythwood_field": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/lythwood_field_8k.hdr",
+   "md5": "e3c5cc3da61c0801c2bf510308ecfe0a",
+   "size": 96374027,
+   "jpg_sha256": "7b8b1ae807bb7d2032001b26880a86c7458f20e7832507355f34f60ff5daf485",
+   "direction": {
+    "pan": 105.0,
+    "tilt": 0.0
+   }
+  },
+  "lythwood_room": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/lythwood_room_8k.hdr",
+   "md5": "fab81ec34cc8f8f8f9c266fd8f735120",
+   "size": 87151946,
+   "jpg_sha256": "bd44563180fa4340f7ce51ee3a4f872b27c21eeb7eb90da634148aff1e48239e",
+   "direction": {
+    "pan": 75.0,
+    "tilt": -30.0
+   }
+  },
+  "machine_shop_02": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/machine_shop_02_8k.hdr",
+   "md5": "ee6f1f7732f37088a437b6a8e5a2b193",
+   "size": 101639218,
+   "jpg_sha256": "15acc344fcb1ed13b94c8c974b0f1cbfb53cd8336b9aad1e402e4cb7af144b8d",
+   "direction": {
+    "pan": 0.0,
+    "tilt": 0.0
+   }
+  },
+  "mall_parking_lot": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/mall_parking_lot_8k.hdr",
+   "md5": "770463d4e08881a0084ea4bdddee9463",
+   "size": 100164329,
+   "jpg_sha256": "1dc472de12a783a494d37e4106104adb071a3bc0f2bedafde9c8cea20aa294c5",
+   "direction": {
+    "pan": 330.0,
+    "tilt": 0.0
+   }
+  },
+  "meadow_2": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/meadow_2_8k.hdr",
+   "md5": "31057d0f92f64f04ee67d248721c2aa5",
+   "size": 102456979,
+   "jpg_sha256": "9e3b5733fdb721d1f8034109b23f6f69d09a68618ddabd2020c82ac4f5213fb3",
+   "direction": {
+    "pan": 180.0,
+    "tilt": 0.0
+   }
+  },
+  "metro_noord": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/metro_noord_8k.hdr",
+   "md5": "2eddd00688e4e734a6fc4d80e7a00b0c",
+   "size": 106642656,
+   "jpg_sha256": "9c50e0ef3615ee04b21c614d56a836c7cc5a50b5ac15e983f5d04c9ae5d4e648",
+   "direction": {
+    "pan": 165.0,
+    "tilt": 0.0
+   }
+  },
+  "neuer_zollhof": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/neuer_zollhof_8k.hdr",
+   "md5": "85da5fccb7f79ad4ab01211ed597f78a",
+   "size": 91924704,
+   "jpg_sha256": "ada3c61f5969c3ecb90c03ad887e13d48432241984f725648c3561a48999d29a",
+   "direction": {
+    "pan": 255.0,
+    "tilt": 0.0
+   }
+  },
+  "neurathen_rock_castle": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/neurathen_rock_castle_8k.hdr",
+   "md5": "321ad7a0cc64c5f0acc98c5ec197ba86",
+   "size": 107035615,
+   "jpg_sha256": "b2c8e7ff2f406e660ee58ce3da9209a45ef52541f1db23e5017d8b5a54d056a9",
+   "direction": {
+    "pan": 330.0,
+    "tilt": 0.0
+   }
+  },
+  "ninomaru_teien": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/ninomaru_teien_8k.hdr",
+   "md5": "e3e8aead0179943d1989e97f9b5d7443",
+   "size": 108951698,
+   "jpg_sha256": "d41e71b2d8b45beea7ebb78225d07c2dedf750e45dc1cb543a7c639b0d7a1579",
+   "direction": {
+    "pan": 165.0,
+    "tilt": 15.0
+   }
+  },
+  "old_bus_depot": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/old_bus_depot_8k.hdr",
+   "md5": "e1c8c212a5191b350b34f76ca576cd80",
+   "size": 102840790,
+   "jpg_sha256": "1bdb5606dff8bc7f41990eff272ca728cf3e0fff983f52f846cd6f46f55ec52b",
+   "direction": {
+    "pan": 150.0,
+    "tilt": 0.0
+   }
+  },
+  "old_hall": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/old_hall_8k.hdr",
+   "md5": "38f1ff41988c5bd94c6c6e919457f00e",
+   "size": 99900139,
+   "jpg_sha256": "5979efec184d7fde89437407d287b8f816aeb1eaa3bedb35b10e0a92ccfcc927",
+   "direction": {
+    "pan": 165.0,
+    "tilt": 0.0
+   }
+  },
+  "park_parking": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/park_parking_8k.hdr",
+   "md5": "ff6c252c08b8ea252a64e3f58d15f4c4",
+   "size": 107448935,
+   "jpg_sha256": "620de03c8e64e30777b38b99466e7dbda881947c4bb8313b0b6f322e4add62a5",
+   "direction": {
+    "pan": 285.0,
+    "tilt": 0.0
+   }
+  },
+  "poly_haven_studio": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/poly_haven_studio_8k.hdr",
+   "md5": "3e39ce288bcddb08eb761f51e60dc86d",
+   "size": 100800695,
+   "jpg_sha256": "9672bc4c0aba374088b96cf51e4b12be3724cb933e9993734ba0ab72472140c1",
+   "direction": {
+    "pan": 195.0,
+    "tilt": 0.0
+   }
+  },
+  "portland_landing_pad": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/portland_landing_pad_8k.hdr",
+   "md5": "bcade1b6ab03d6b122c886ebab3adb6b",
+   "size": 101650350,
+   "jpg_sha256": "d97e35439f09a0cab1f2224a95162bdf8b592807fe7ac28d0706aafe15055727",
+   "direction": {
+    "pan": 150.0,
+    "tilt": 0.0
+   }
+  },
+  "potsdamer_platz": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/potsdamer_platz_8k.hdr",
+   "md5": "6d4285200665950ff4e80c0eadc6d7df",
+   "size": 93252378,
+   "jpg_sha256": "838a1310b2580abad27cb7826be3b3659197a40317ed15ba531a747c70f84565",
+   "direction": {
+    "pan": 60.0,
+    "tilt": 0.0
+   }
+  },
+  "preller_drive": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/preller_drive_8k.hdr",
+   "md5": "c41426487ccc81bfc3619a43ecc13b26",
+   "size": 113655350,
+   "jpg_sha256": "14e11e5035f1dc6b8070cf6905a4c0fea86ec16301073a2f186dfdb88ee47366",
+   "direction": {
+    "pan": 255.0,
+    "tilt": 15.0
+   }
+  },
+  "pretoria_gardens": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/pretoria_gardens_8k.hdr",
+   "md5": "27b3a6ffa70612699f277f1d36a8939c",
+   "size": 103259278,
+   "jpg_sha256": "128781ec0187c91152988bb38fe865673c8eeacbe3f41dff432a5aab37c97a1d",
+   "direction": {
+    "pan": 300.0,
+    "tilt": 0.0
+   }
+  },
+  "quattro_canti": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/quattro_canti_8k.hdr",
+   "md5": "5c63c208e33cddbf06992cfb8da61526",
+   "size": 101930240,
+   "jpg_sha256": "e7e906206820005b07013325efcd14630e42f90f15c582c1500372720d4b8c00",
+   "direction": {
+    "pan": 270.0,
+    "tilt": 15.0
+   }
+  },
+  "railway_bridge_02": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/railway_bridge_02_8k.hdr",
+   "md5": "179c11ca5eb070fdc70b1c62d6bd4086",
+   "size": 100505930,
+   "jpg_sha256": "948960380e58ddc7b0a9d5f831458059b78a703cb24b4c41beb5311712e1995f",
+   "direction": {
+    "pan": 150.0,
+    "tilt": 0.0
+   }
+  },
+  "rathaus": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/rathaus_8k.hdr",
+   "md5": "12ac5183c2dbdafb413dd1d94fe33838",
+   "size": 104539169,
+   "jpg_sha256": "908bf649b25cc441dfeee861cc069d9917ca182aba2a3bdb6e3c752008aead5f",
+   "direction": {
+    "pan": 315.0,
+    "tilt": 0.0
+   }
+  },
+  "reinforced_concrete_01": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/reinforced_concrete_01_8k.hdr",
+   "md5": "14af8f9fa64348cfd3b35fb8c17d34cb",
+   "size": 101930434,
+   "jpg_sha256": "0da397bbb04332de13ef1b8b5f2d4cabb0220d547a423f61d7976d2df4178e02",
+   "direction": {
+    "pan": 330.0,
+    "tilt": 15.0
+   }
+  },
+  "resting_place_2": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/resting_place_2_8k.hdr",
+   "md5": "ad601be76f8790a7eec4d2962f828146",
+   "size": 102836010,
+   "jpg_sha256": "ca01f3010cc839002002e23742598766d7e6ed4615b44c0bc2a1e9af6e6f9fdf",
+   "direction": {
+    "pan": 345.0,
+    "tilt": 0.0
+   }
+  },
+  "royal_esplanade": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/royal_esplanade_8k.hdr",
+   "md5": "f4a96b179056f7bd22f8b212a3ab96bb",
+   "size": 96435714,
+   "jpg_sha256": "c25179441dca8e004ae789171c9b9996db38b9c2ca6963975ad39947edf312b5",
+   "direction": {
+    "pan": 150.0,
+    "tilt": 0.0
+   }
+  },
+  "schadowplatz": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/schadowplatz_8k.hdr",
+   "md5": "c6876c86f5197948ec3c698fca7bd294",
+   "size": 95966045,
+   "jpg_sha256": "dddb6080e412d1e4e6748c5db5c3c6ee0e8a178927c2c8e09a82e44ec5728358",
+   "direction": {
+    "pan": 30.0,
+    "tilt": 15.0
+   }
+  },
+  "sculpture_exhibition": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/sculpture_exhibition_8k.hdr",
+   "md5": "df473bb9c2594a1539e48abe06740d81",
+   "size": 98476489,
+   "jpg_sha256": "19f4ce7023735e4100bb2d1288f8605325ca7dd94ac718a80a92d7b21323d88f",
+   "direction": {
+    "pan": 165.0,
+    "tilt": 0.0
+   }
+  },
+  "secluded_beach": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/secluded_beach_8k.hdr",
+   "md5": "1d4bc7a9b14a36e20c92f3db4ee2c288",
+   "size": 99396041,
+   "jpg_sha256": "6f3180e357b34d9507e58b43ff8f1393a582b1c51b8f958c021916c8be25afad",
+   "direction": {
+    "pan": 315.0,
+    "tilt": 0.0
+   }
+  },
+  "shanghai_bund": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/shanghai_bund_8k.hdr",
+   "md5": "823724925f85ec1e7c32f271760ca806",
+   "size": 99678868,
+   "jpg_sha256": "2bfb043e016db15e01029a56e9cbc8330e1d2f167cd64852696135adf55918ec",
+   "direction": {
+    "pan": 315.0,
+    "tilt": 0.0
+   }
+  },
+  "signal_hill_sunrise": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/signal_hill_sunrise_8k.hdr",
+   "md5": "ccd9a239996afa39a93ab239291c8752",
+   "size": 90147026,
+   "jpg_sha256": "51f7a40f0158baf08ddf602bcdbc9e1ef888d06f45cbdc92fa793a1c49d76d23",
+   "direction": {
+    "pan": 165.0,
+    "tilt": 0.0
+   }
+  },
+  "snowy_forest_path_01": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/snowy_forest_path_01_8k.hdr",
+   "md5": "64ebdc3e2d33e64935503a0d2635ac70",
+   "size": 101368193,
+   "jpg_sha256": "976d35bd973c1566aa70d8952771c4405b49261abac16c1a6104aeffeb6890b1",
+   "direction": {
+    "pan": 255.0,
+    "tilt": 15.0
+   }
+  },
+  "snowy_hillside": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/snowy_hillside_8k.hdr",
+   "md5": "dce982a2e96786976aacb26120e053fa",
+   "size": 97225099,
+   "jpg_sha256": "dbccb4deaf3875644c7d3672452aba6534ea6d3979f88279989a98f2573f2ffc",
+   "direction": {
+    "pan": 270.0,
+    "tilt": 0.0
+   }
+  },
+  "spaichingen_hill": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/spaichingen_hill_8k.hdr",
+   "md5": "f1197505f430c14ef86cfd045c417649",
+   "size": 102377556,
+   "jpg_sha256": "f5261b9407e29e390da935fb1e7b6aa91eb208fbe8b15f7cecef086c7e770cee",
+   "direction": {
+    "pan": 315.0,
+    "tilt": 15.0
+   }
+  },
+  "stadium_01": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/stadium_01_8k.hdr",
+   "md5": "5c3dfd35a05640754785343958c820ce",
+   "size": 99247241,
+   "jpg_sha256": "b38ee87599c5be1ec134b1d82b0d799a31a57c82193298389b756c96b6e4ea14",
+   "direction": {
+    "pan": 90.0,
+    "tilt": 15.0
+   }
+  },
+  "studio_garden": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/studio_garden_8k.hdr",
+   "md5": "1555dd8a613861f470cf78a1eeb61d17",
+   "size": 109019103,
+   "jpg_sha256": "fff85ee6278a14a28970550f8d595640720757ce9fdf1fd5bf9b4b89a2610aa7",
+   "direction": {
+    "pan": 165.0,
+    "tilt": 0.0
+   }
+  },
+  "suburban_garden": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/suburban_garden_8k.hdr",
+   "md5": "92c5e7da29a6e3a44bd1a7142a55d3d8",
+   "size": 102078098,
+   "jpg_sha256": "24985ff3d5454839f9689983807b995ab1fce31f3d569eccf37cc46707142448",
+   "direction": {
+    "pan": 120.0,
+    "tilt": 0.0
+   }
+  },
+  "subway_entrance": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/subway_entrance_8k.hdr",
+   "md5": "ace9d2bd34312920cf2aefc68597b866",
+   "size": 106527947,
+   "jpg_sha256": "651dd2c30395fb1feb1905d194dbada4c35b43258ddd77c9fbb2967cb4368781",
+   "direction": {
+    "pan": 255.0,
+    "tilt": 0.0
+   }
+  },
+  "sunny_country_road": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/sunny_country_road_8k.hdr",
+   "md5": "70ae46d80ea198e27a2f7d7f1c254a69",
+   "size": 108210928,
+   "jpg_sha256": "12f8f5cdcd5ed195e4cc7524e894d55addedaae1d441c2a19f0e796fb6af0591",
+   "direction": {
+    "pan": 225.0,
+    "tilt": 15.0
+   }
+  },
+  "sunny_vondelpark": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/sunny_vondelpark_8k.hdr",
+   "md5": "670e9144de6b3c43f53e81ba9737ee39",
+   "size": 111490543,
+   "jpg_sha256": "5e608a3756fdc386180f66df60e3745c7243927a77932eca6ca8eab0dd2a0e2b",
+   "direction": {
+    "pan": 240.0,
+    "tilt": 30.0
+   }
+  },
+  "sunset_jhbcentral": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/sunset_jhbcentral_8k.hdr",
+   "md5": "e7cbbfcce30ce165b74824faedef9a74",
+   "size": 93730967,
+   "jpg_sha256": "18939a8f4fd977e968efbccf4c576bfc7589955bfcbf911f3538ba09f1b7f576",
+   "direction": {
+    "pan": 255.0,
+    "tilt": 0.0
+   }
+  },
+  "symmetrical_garden_02": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/symmetrical_garden_02_8k.hdr",
+   "md5": "1aab88dd4323277d5734c851fa757d09",
+   "size": 103202254,
+   "jpg_sha256": "04939552e4744e3baf72aa206db0dc51354a77762d2475f09c54bfa43fa1f3b3",
+   "direction": {
+    "pan": 270.0,
+    "tilt": 0.0
+   }
+  },
+  "tears_of_steel_bridge": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/tears_of_steel_bridge_8k.hdr",
+   "md5": "c6fdc3e4f46a45264eb87e603587b936",
+   "size": 94059264,
+   "jpg_sha256": "d9317c15ff2ae9f27d23691ab858300001ae79f9b9ed780197854c85707c5ce2",
+   "direction": {
+    "pan": 180.0,
+    "tilt": 0.0
+   }
+  },
+  "thatch_chapel": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/thatch_chapel_8k.hdr",
+   "md5": "3e9c90b060c1e060b74d8b79261c5c0b",
+   "size": 105864465,
+   "jpg_sha256": "f0c5a912059ac92b2cb489a658cca61b0b7da60d36818fd772f8aa7db45f48a7",
+   "direction": {
+    "pan": 195.0,
+    "tilt": -15.0
+   }
+  },
+  "tiergarten": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/tiergarten_8k.hdr",
+   "md5": "19bc055118296d4df616102ef1328a96",
+   "size": 103359966,
+   "jpg_sha256": "58910566a77665a663a987c156813c6d0c3753635254f257821f03ba6275b4f7",
+   "direction": {
+    "pan": 255.0,
+    "tilt": 0.0
+   }
+  },
+  "ulmer_muenster": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/ulmer_muenster_8k.hdr",
+   "md5": "a1db840d1efb73b605eebe6fb4959339",
+   "size": 97461752,
+   "jpg_sha256": "828ebc18fabd7bda1887ca0279d72ea350d80298169828d7a2ae0d8d1e33788b",
+   "direction": {
+    "pan": 180.0,
+    "tilt": 0.0
+   }
+  },
+  "urban_alley_01": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/urban_alley_01_8k.hdr",
+   "md5": "2b1ead7def7222e54e7afd42ff2d3d36",
+   "size": 103425353,
+   "jpg_sha256": "f185e905d5d3e380dc1ab7186719b3c82cf1089a908818182164d4c388b41a0e",
+   "direction": {
+    "pan": 345.0,
+    "tilt": 0.0
+   }
+  },
+  "urban_courtyard_02": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/urban_courtyard_02_8k.hdr",
+   "md5": "43d7ab8fcc61218e2ba006a072d3128f",
+   "size": 102121509,
+   "jpg_sha256": "385bbe9d7a427f69c0655521e5b70ec0cfb2ca1c90c875c6e66f82f3e3cf9d9f",
+   "direction": {
+    "pan": 75.0,
+    "tilt": 0.0
+   }
+  },
+  "vatican_road": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/vatican_road_8k.hdr",
+   "md5": "242afa64fe4cedd0874844be52872ae7",
+   "size": 96581067,
+   "jpg_sha256": "240dd6d274f8f8e77075fbf41d2018b3be5ecb8657d59e82d9f3e41dcdbfea3a",
+   "direction": {
+    "pan": 60.0,
+    "tilt": 0.0
+   }
+  },
+  "venetian_crossroads": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/venetian_crossroads_8k.hdr",
+   "md5": "c013561bc297d4789e5308fd07ff6e58",
+   "size": 92041023,
+   "jpg_sha256": "379900eba8b4aafba81fa51ed193f33b411cb62cd6c3593d802925024693334e",
+   "direction": {
+    "pan": 120.0,
+    "tilt": 0.0
+   }
+  },
+  "venice_sunrise": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/venice_sunrise_8k.hdr",
+   "md5": "59623f105e40ee94e3471e08a914c2ae",
+   "size": 93752422,
+   "jpg_sha256": "59c702d7b53e93dc6738a8acef0087a03b5875cae4cca9ef58fff9c4e45e70d6",
+   "direction": {
+    "pan": 135.0,
+    "tilt": 0.0
+   }
+  },
+  "veranda": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/veranda_8k.hdr",
+   "md5": "8515fbe0110486836e4ae5e658d4a7a0",
+   "size": 104092923,
+   "jpg_sha256": "bad89e259a9630ddb4ffb0e73e5f84e62b89a3e43f12bd94a458d0b9080c7180",
+   "direction": {
+    "pan": 15.0,
+    "tilt": 0.0
+   }
+  },
+  "vignaioli_night": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/vignaioli_night_8k.hdr",
+   "md5": "ccdd6acddaadc9b1c96aef81faae0f4f",
+   "size": 106528864,
+   "jpg_sha256": "d08d96313e51588952efaf80e730d9032ce6f4ad2c4ce185ec28aacdf3de5cb1",
+   "direction": {
+    "pan": 150.0,
+    "tilt": 0.0
+   }
+  },
+  "warm_bar": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/warm_bar_8k.hdr",
+   "md5": "a6e85bde33d6ba7502cd624b8f2aef2b",
+   "size": 88922665,
+   "jpg_sha256": "3299269ab258692f19f90f9f820218652c9812cb616cd6232757aad00c3c721a",
+   "direction": {
+    "pan": 105.0,
+    "tilt": 0.0
+   }
+  },
+  "warm_restaurant_night": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/warm_restaurant_night_8k.hdr",
+   "md5": "4d7ed37a78fd2547cc6f5716136ad5af",
+   "size": 87940441,
+   "jpg_sha256": "0e7190f74886a2a01f5736988fdcce30b005013f013a221d6da8e3fd9a978845",
+   "direction": {
+    "pan": 255.0,
+    "tilt": 0.0
+   }
+  },
+  "wide_street_01": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/wide_street_01_8k.hdr",
+   "md5": "df7cc47383d269534bcc028974a17747",
+   "size": 93982239,
+   "jpg_sha256": "d05b92275d7e0852d7e446dbea539fb658bd545fb3fc4f3f5a29f066bf574a50",
+   "direction": {
+    "pan": 45.0,
+    "tilt": 0.0
+   }
+  },
+  "wooden_lounge": {
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/wooden_lounge_8k.hdr",
+   "md5": "ddc27f639ad20f1803c0bcb2bfc743f5",
+   "size": 97565100,
+   "jpg_sha256": "81ec0251977b7ddb82260bc5a93b35e1295838df9f2ed10aa7be3bb72db04d24",
+   "direction": {
+    "pan": 240.0,
+    "tilt": -15.0
+   }
+  }
+ },
+ "note": "jpg_sha256 = the panorama in PolyHaven_panoramas_100.zip; url/md5/size = the 8k HDR it was tonemapped from; direction = the coarse-scan direction (pan, tilt in degrees) the user study shot from"
+}

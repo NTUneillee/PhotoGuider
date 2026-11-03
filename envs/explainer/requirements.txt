@@ -1,0 +1,18 @@
+# Optional text-explanation environment; exact versions from the release environment that produced the shipped numbers.
+accelerate==1.13.0
+bitsandbytes==0.49.2
+joblib==1.5.3
+lightgbm==4.6.0
+numpy==2.0.1
+pandas==3.0.2
+peft==0.19.1
+pillow==11.2.1
+pyarrow==23.0.1
+qwen-vl-utils==0.0.14
+safetensors==0.8.0rc0
+scikit-learn==1.8.0
+scipy==1.17.1
+torch==2.11.0+cu128
+torchvision==0.26.0+cu128
+transformers==5.5.4
+matplotlib==3.11.1

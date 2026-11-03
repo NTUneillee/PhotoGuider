@@ -1,0 +1,17 @@
+# Benchmark reproduction + single-image orchestration (the `main` environment).
+# reproduce.py needs only the first six; the live path adds joblib + pillow.
+numpy==2.0.1
+pandas==3.0.2
+lightgbm==4.6.0
+scikit-learn==1.8.0
+scipy==1.17.1
+pyarrow==23.0.1
+joblib==1.5.3
+pillow==11.2.1
+
+# NOT listed here (kept in their own environments, invoked as subprocesses):
+#   - per-crop deep-feature extractors (CLIP / LAION-aesthetic / FGAesQ / SAM).
+#   - Venus 4-bit MLLM (torch + transformers + bitsandbytes).
+# See envs/README.md for every specialist environment and its supported setup path.
+# The benchmark reproduction (reproduce.py) needs none of those:
+# every MLLM / deep-feature input is a frozen cached artifact.

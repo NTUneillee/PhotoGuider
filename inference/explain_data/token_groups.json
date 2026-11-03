@@ -1,0 +1,333 @@
+{
+"_meta": {
+"tokens": {
+"S": {
+"name_zh": "主體 Subject",
+"name_en": "Subject",
+"question_zh": "拍什麼",
+"n": 10
+},
+"C": {
+"name_zh": "構圖 Composition",
+"name_en": "Composition",
+"question_zh": "怎麼擺",
+"n": 22
+},
+"A": {
+"name_zh": "美學 Aesthetics",
+"name_en": "Aesthetics",
+"question_zh": "美不美",
+"n": 8
+},
+"I": {
+"name_zh": "場景完整性 Integrity",
+"name_en": "Integrity",
+"question_zh": "切到誰",
+"n": 20
+}
+},
+"note": "feature -> token assignment with hand-polished zh/en phrasings."
+},
+"features": {
+"vmix_max": {
+"token": "S",
+"zh": "視線最先落點的強度",
+"en": "strength of where the eye lands first"
+},
+"v1_max": {
+"token": "S",
+"zh": "主視覺焦點的強度",
+"en": "strength of the primary focal point"
+},
+"v1_cov": {
+"token": "S",
+"zh": "主體在畫面中的視覺佔比",
+"en": "how much of the frame the subject commands"
+},
+"inspy_capture": {
+"token": "S",
+"zh": "主體收進畫面的完整度",
+"en": "how fully the subject is kept in frame"
+},
+"inspy_max": {
+"token": "S",
+"zh": "主體最顯眼處的強度",
+"en": "peak prominence of the subject"
+},
+"subject_size_ratio": {
+"token": "S",
+"zh": "主體的景別大小",
+"en": "how large the subject sits in the frame"
+},
+"sam_mask_area_ratio": {
+"token": "S",
+"zh": "主體佔畫面的面積比",
+"en": "the subject's share of the frame area"
+},
+"sam_mask_centered_x": {
+"token": "S",
+"zh": "主體的水平位置",
+"en": "the subject's horizontal placement"
+},
+"sam_mask_centered_y": {
+"token": "S",
+"zh": "主體的垂直位置",
+"en": "the subject's vertical placement"
+},
+"sam_mask_vs_inspy_iou": {
+"token": "S",
+"zh": "兩套主體判讀的一致程度",
+"en": "agreement between two subject readings"
+},
+"thirds_align": {
+"token": "C",
+"zh": "三分法對齊程度",
+"en": "rule-of-thirds alignment"
+},
+"sym_v_diff": {
+"token": "C",
+"zh": "左右對稱感",
+"en": "left-right symmetry"
+},
+"sym_diag_diff": {
+"token": "C",
+"zh": "對角線對稱感",
+"en": "diagonal symmetry"
+},
+"tri_top_apex": {
+"token": "C",
+"zh": "上聚頂的三角構圖",
+"en": "upward-pointing triangular composition"
+},
+"tri_bot_apex": {
+"token": "C",
+"zh": "下聚底的三角構圖",
+"en": "downward-pointing triangular composition"
+},
+"visual_weight_x": {
+"token": "C",
+"zh": "左右視覺重量的平衡",
+"en": "left-right balance of visual weight"
+},
+"visual_weight_y": {
+"token": "C",
+"zh": "上下視覺重量的平衡",
+"en": "top-bottom balance of visual weight"
+},
+"ca_dist": {
+"token": "C",
+"zh": "主體偏離畫面中心的幅度",
+"en": "how far the subject sits from the frame center"
+},
+"area_ratio": {
+"token": "C",
+"zh": "取景的鬆緊",
+"en": "how tight or loose the framing is"
+},
+"log_aspect_diff": {
+"token": "C",
+"zh": "長寬比與指定比例的吻合",
+"en": "how well the aspect ratio matches the request"
+},
+"sam_thirds_q_mean": {
+"token": "C",
+"zh": "各物件落在三分線上的平均程度",
+"en": "how consistently objects sit on the thirds lines"
+},
+"sam_thirds_q_max": {
+"token": "C",
+"zh": "最貼三分線的物件對齊度",
+"en": "the strongest object-on-thirds alignment"
+},
+"sam_thirds_vs_center": {
+"token": "C",
+"zh": "三分擺位相對置中擺位的傾向",
+"en": "lean toward thirds versus centered placement"
+},
+"clip_sim_pro": {
+"token": "C",
+"zh": "與『專業構圖』的語義貼近度",
+"en": "closeness to a 'professional composition' cue"
+},
+"clip_sim_balanced": {
+"token": "C",
+"zh": "與『平衡構圖』的語義貼近度",
+"en": "closeness to a 'balanced composition' cue"
+},
+"clip_sim_leading": {
+"token": "C",
+"zh": "與『引導線構圖』的語義貼近度",
+"en": "closeness to a 'leading lines' cue"
+},
+"clip_sim_thirds": {
+"token": "C",
+"zh": "與『三分法構圖』的語義貼近度",
+"en": "closeness to a 'rule of thirds' cue"
+},
+"clip_sim_symmetric": {
+"token": "C",
+"zh": "與『對稱構圖』的語義貼近度",
+"en": "closeness to a 'symmetric composition' cue"
+},
+"clip_sim_negspace": {
+"token": "C",
+"zh": "與『留白構圖』的語義貼近度",
+"en": "closeness to a 'negative space' cue"
+},
+"clip_sim_centered": {
+"token": "C",
+"zh": "與『置中構圖』的語義貼近度",
+"en": "closeness to a 'centered composition' cue"
+},
+"clip_sim_dynamic": {
+"token": "C",
+"zh": "與『動態構圖』的語義貼近度",
+"en": "closeness to a 'dynamic composition' cue"
+},
+"clip_max_sim": {
+"token": "C",
+"zh": "最貼近的構圖法則強度",
+"en": "strength of the best-matching composition rule"
+},
+"laion_score": {
+"token": "A",
+"zh": "大眾審美評分",
+"en": "crowd-taste aesthetic score"
+},
+"laion_pi_minmax": {
+"token": "A",
+"zh": "候選池內的美感排名",
+"en": "aesthetic ranking within the candidate pool"
+},
+"fgaesq_score": {
+"token": "A",
+"zh": "專業級細粒度美學評分",
+"en": "expert fine-grained aesthetic score"
+},
+"color_sat_mean": {
+"token": "A",
+"zh": "整體色彩飽和度",
+"en": "overall color saturation"
+},
+"sam_fg_bg_sat_diff": {
+"token": "A",
+"zh": "主體與背景的飽和度落差",
+"en": "saturation contrast between subject and background"
+},
+"sam_fg_bg_val_diff": {
+"token": "A",
+"zh": "主體與背景的明暗落差",
+"en": "brightness contrast between subject and background"
+},
+"sam_fg_bg_lab_dist": {
+"token": "A",
+"zh": "主體從背景跳出的色彩對比",
+"en": "how strongly the subject pops in color from the background"
+},
+"sam_fg_var": {
+"token": "A",
+"zh": "主體區域的色彩豐富度",
+"en": "color richness within the subject"
+},
+"sam_emb_norm": {
+"token": "I",
+"zh": "框內的資訊量",
+"en": "amount of visual information inside the crop"
+},
+"sam_emb_var": {
+"token": "I",
+"zh": "框內資訊的變化度",
+"en": "variation of information inside the crop"
+},
+"sam_emb_kurt": {
+"token": "I",
+"zh": "框內資訊的集中度",
+"en": "how concentrated the information is inside the crop"
+},
+"sam_cand_norm_mean": {
+"token": "I",
+"zh": "框內物件訊號的平均強度",
+"en": "average object signal inside the crop"
+},
+"sam_cand_norm_max": {
+"token": "I",
+"zh": "框內最強的物件訊號",
+"en": "strongest object signal inside the crop"
+},
+"sam_cand_norm_std": {
+"token": "I",
+"zh": "框內物件訊號的起伏",
+"en": "spread of object signal inside the crop"
+},
+"sam_cand_to_outside_ratio": {
+"token": "I",
+"zh": "框內外資訊對比（切掉了多少）",
+"en": "inside-vs-outside information contrast (how much was cut)"
+},
+"sam_image_total_norm": {
+"token": "I",
+"zh": "整張原圖的資訊量基準",
+"en": "the whole image's information baseline"
+},
+"sam_cos_to_image": {
+"token": "I",
+"zh": "景別的遠近（特寫↔全景）",
+"en": "shot scale from close-up to full view"
+},
+"sam_obj_count_in_cand": {
+"token": "I",
+"zh": "框內的物件數量",
+"en": "number of objects inside the crop"
+},
+"sam_obj_top1_share": {
+"token": "I",
+"zh": "最大物件的佔比",
+"en": "the largest object's share"
+},
+"sam_obj_top3_share": {
+"token": "I",
+"zh": "前三大物件的合計佔比",
+"en": "the top-three objects' combined share"
+},
+"sam_obj_area_cv": {
+"token": "I",
+"zh": "物件之間的大小落差",
+"en": "size disparity among objects"
+},
+"sam_dominant_ratio": {
+"token": "I",
+"zh": "主導物件的突出程度",
+"en": "how dominant the leading object is"
+},
+"sam_mask_q_mean": {
+"token": "I",
+"zh": "物件輪廓的完整度（被切就下降）",
+"en": "how cleanly objects are contained (drops when cut)"
+},
+"sam_mask_q_std": {
+"token": "I",
+"zh": "物件完整度的一致性",
+"en": "consistency of object containment"
+},
+"sam_mask_q_margin": {
+"token": "I",
+"zh": "物件到框緣的安全餘裕（切殘檢查）",
+"en": "object margin to the frame edge (truncation check)"
+},
+"sam_h_area_cv": {
+"token": "I",
+"zh": "前中後景的層次落差",
+"en": "size contrast across depth layers"
+},
+"sam_h_iou_top12": {
+"token": "I",
+"zh": "主要場景層次之間的重疊",
+"en": "overlap between the main scene layers"
+},
+"sam_h_cand_match_max": {
+"token": "I",
+"zh": "取景與場景層次結構的呼應",
+"en": "how well the crop echoes the scene's layered structure"
+}
+}
+}

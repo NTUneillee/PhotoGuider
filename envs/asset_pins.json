@@ -1,0 +1,117 @@
+{
+  "revisions": {
+    "fgaesq_source": "f23b8510f3f407f9ca5b997cfc9c6bfb07d44d08",
+    "clip": "32bd64288804d66eefd0ccbe215aa642df71cc41",
+    "qwen": "cc594898137f460bfe9f0759e9844b3ce807cfb5",
+    "venus": "9d274cffcb50de02a82263445cb0f2e3576db743"
+  },
+  "files": {
+    "envs/sam/weights/sam_vit_b_01ec64.pth": "ec2df62732614e57411cdcf32a23ffdf28910380d03139ee0f4fcbe91eb8c912",
+    "envs/laion/weights/sa_0_4_vit_l_14_linear.pth": "2cd4e60f4f24ae3bcd57b847b13c1f3ba27edc28cc1a7f9ce74ee9f421243cba",
+    "envs/fgaesq/weights/FGAesQ.pt": "7249cd7066aae7067258cc28d13fef1a369693e557c2fd9ac172edfaebd1af65",
+    "envs/fgaesq/FGAesQ_Inference/inference_series.py": "98ef36109fcebbca4e46d4f48c6da2e0acf01bace382fc85086906bae7dc25b2",
+    "envs/fgaesq/FGAesQ_Inference/inference_single.py": "5e9f62c7223a6942adf5eac4c70ab140d008b708499dac2ca57c4fc922cfb600",
+    "envs/fgaesq/FGAesQ_Inference/requirements.txt": "5b5b97d193ec8f66ba8ac5094595d702d3aa1788c49cd5faf3b3dabda00259ee",
+    "envs/fgaesq/FGAesQ_Inference/utils/data_utils.py": "e4c5e14d0d8ce8db8de51a712b70a056d1440527737620d2842b3a0f195c7137",
+    "envs/fgaesq/FGAesQ_Inference/utils/DiffToken.py": "9245ddee8542246979c31abe5caccec6ed941f22c772a1e7a3ab3b70ec136952",
+    "envs/fgaesq/FGAesQ_Inference/utils/FGAesQ.py": "56781c4fdbcacc5d81e6c03bd9afc8c0c7f6e0b2296a062686672d7e21a8780c"
+  },
+  "venus_files": {
+    ".gitattributes": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+    "config.json": "13f16bc8ccacc0cb9fb1bc9c23c67ce69401bcc755dd8887169d466e1fddb56b",
+    "configuration_qwen.py": "8d37195dcafd46685204a9c73fdb5ebc2c3670de22ad8b8e488d137baa2850d9",
+    "generation_config.json": "e37532acbbe928802c69c9ba530aa45e04a5b2db7bbdc4b3b89ff90f4bf951b7",
+    "modeling_qwen.py": "879c605cd38599134300e0b637e636975baa0574a76c1ce42acbe67d99b56ce0",
+    "pytorch_model-00001-of-00002.bin": "7265b5dd933bd4f746374a4556a3193caaad5a2ff8687c8e7e09cc0ee9bf7021",
+    "pytorch_model-00002-of-00002.bin": "cba2f469902f77b8af6f7dbb9f245e9b427515c02777c6bcd0f244b448e57e48",
+    "pytorch_model.bin.index.json": "171e4961006fce84e4cfa198533debd7770c86b5c4bdc10c6ee4cdeb2bc7fada",
+    "qwen.tiktoken": "b2b1b8dfb5cc5f024bafc373121c6aba3f66f9a5a0269e243470a1de16a33186",
+    "qwen_generation_utils.py": "4d7b323726a0f1a3b96400fff2785f8dd5c5a913d9b612317b0f20c89917b4bd",
+    "special_tokens_map.json": "831320a8d98be301cca03a69d4fcea7c9115d817dbc796420fd643bf7e9f6db1",
+    "tokenization_qwen.py": "e4e5da0023ec29d0fbf6784b1a14fc67424a48b5e19cbd36a049da86c4871d0b",
+    "tokenizer_config.json": "3b3f85b9df85180082bd3d0842c646fabfe2a1fa73898a65f9a0e9a7d3fe8f1d",
+    "trainer_state.json": "9cbe90af8cb2b67cd55d5734e2b77368e1837474b6b8127081066fb8bbec5525",
+    "training_args.bin": "e1eb949a9d04037c903f723596268fd5e246355b232bae4353ba0431d34302d7",
+    "visual.py": "ac81001596af4d14a5c212b8b947f328167d06aa7c3540286632833681f1440b",
+    "zero_to_fp32.py": "47e22c3e2e9c55705ff72102ffd1146b607e80880f2011ced5bc969d11ea7b05"
+  },
+  "hf_snapshots": {
+    "models--openai--clip-vit-large-patch14": {
+      "config.json": "8a09b467700c58138c29d53c605b34ebc69beaadd13274a8a2af8ad2c2f4032a",
+      "merges.txt": "9fd691f7c8039210e0fced15865466c65820d09b63988b0174bfe25de299051a",
+      "model.safetensors": "a2bf730a0c7debf160f7a6b50b3aaf3703e7e88ac73de7a314903141db026dcb",
+      "preprocessor_config.json": "910e70b3956ac9879ebc90b22fb3bc8a75b6a0677814500101a4c072bd7857bd",
+      "special_tokens_map.json": "f8c0d6c39aee3f8431078ef6646567b0aba7f2246e9c54b8b99d55c22b707cbf",
+      "tokenizer.json": "a83e0809aa4c3af7208b2df632a7a69668c6d48775b3c3fe4e1b1199d1f8b8f4",
+      "tokenizer_config.json": "deef455e52fa5e8151e339add0582e4235f066009601360999d3a9cda83b1129",
+      "vocab.json": "3f0c4f7d2086b61b38487075278ea9ed04edb53a03cbb045b86c27190fa8fb69"
+    },
+    "models--Qwen--Qwen2.5-VL-7B-Instruct": {
+      "chat_template.json": "ad60d90252ed0b0705ba14e2d0ad0fec0beac1ea955642b54059b36052d8bc96",
+      "config.json": "77d9ec7321cc572e3579e2c84799c9cadaded63c49ce93b101733349fc330c43",
+      "generation_config.json": "0a3aea82869fe29f20dc95ccf3e2bcff380eca1f5ad6447a4a4b37110b08e43e",
+      "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+      "model-00001-of-00005.safetensors": "e97b877e47fde53a6c6e77aafb36e58e91ee9d95c4a3eeac6f1b5c0e6a1c986e",
+      "model-00002-of-00005.safetensors": "a9a300a43b4724eee2abe7c18ceb26768d0ab011eb0cad19d9bfd2476a24d024",
+      "model-00003-of-00005.safetensors": "111223d173e00bbee81cba1216fad28668df3476706b7fd26f4d5b50f8b3a507",
+      "model-00004-of-00005.safetensors": "ef47f634fa57d46ee134edcc09f34085a47da1e16c12a2abe0d67118be6d72ed",
+      "model-00005-of-00005.safetensors": "0c859795ad3a627a9b95bcb762e059d5b768a4a36fdd4affeff269d93fdecc67",
+      "model.safetensors.index.json": "73b333b0b16e5286ddba615d2caebcd495cf7e616f52eb217a81781393d79de9",
+      "preprocessor_config.json": "f2058c716eef96ccaed1cc1e2d0c08306b62586d535b28d9d08e691b2fab7ca0",
+      "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "tokenizer_config.json": "4abd3520120e266da84c0864fee064d1fb10806f02225911a47253dd38dc5f56",
+      "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+  },
+  "other_assets": {
+    "dinov3": {
+      "huggingface:timm/vit_small_patch16_dinov3.lvd1689m@3bf4720a82ec2066db88137180ff1f83a675cef0/model.safetensors": "2a1ec16ae28ffa07bc0ead0241ee7df9fc26451fe6f9f839b7b3afa0a906b040"
+    },
+    "openclip_vit_l14_openai": {
+      "huggingface:timm/vit_large_patch14_clip_224.openai@18d0535469bb561bf468d76c1d73aa35156c922b/open_clip_model.safetensors": "9ce2e8a8ebfff3793d7d375ad6d3c35cb9aebf3de7ace0fc7308accab7cd207e",
+      "openai-clip-cache:ViT-L-14.pt": "b8cca3fd41ae0c99ba7e8951adf17d267cdb84cd88be6f7c2e0eca1737a03836"
+    },
+    "fgaesq_clip_vit_b16": {
+      "openai-clip-cache:ViT-B-16.pt": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f"
+    },
+    "inspyrenet": {
+      "transparent-background-cache:ckpt_base.pth": "0a6fe2a73ab0532d6d0b8d82849a9760a226df719e3063d09b4149ece6f80fcd"
+    }
+  },
+  "package_versions": {
+    "main": {
+      "matplotlib": "3.11.1",
+      "transparent-background": "1.3.4",
+      "regex": "2026.9.3",
+      "timm": "1.0.26",
+      "torch": "2.11.0+cu128",
+      "transformers": "5.5.4"
+    },
+    "laion": {
+      "open_clip_torch": "3.3.0",
+      "ftfy": "6.3.1",
+      "regex": "2026.9.3",
+      "timm": "1.0.29"
+    },
+    "fgaesq": {
+      "ftfy": "6.3.1",
+      "regex": "2026.9.3",
+      "scikit-image": "0.26.0",
+      "matplotlib": "3.11.1",
+      "setuptools": "80.10.2",
+      "wheel": "0.48.0"
+    },
+    "explainer": {
+      "matplotlib": "3.11.1"
+    },
+    "venus": {
+      "matplotlib": "3.10.9",
+      "transformers": "4.37.2"
+    },
+    "build_tools": {
+      "pip": "26.2.1",
+      "setuptools": "81.0.0 (fgaesq env 80.10.2; setuptools<81 needed for the CLIP git install)",
+      "wheel": "0.48.0"
+    }
+  }
+}

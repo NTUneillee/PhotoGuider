@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  cpu-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile Python sources
+        run: python -m compileall -q app.py inference tools tests envs PanoCropping/scripts PanoCropping/models
+      - name: Undefined names (pyflakes)
+        run: |
+          pip install pyflakes==4.1.0
+          ! python -m pyflakes app.py inference PanoCropping tools tests | grep -E 'undefined name' | grep -v 'tests/test_feature_contract.py'
+      - name: Parse all shell scripts
+        run: git ls-files -z '*.sh' | xargs -0 -r -n 1 bash -n
+      - name: Install CPU test dependencies
+        run: pip install -r requirements.txt opencv-python-headless==4.13.0.92   # cv2: tests/test_pano_explain imports _lib/pano.py
+      - name: Run CPU tests (no caches, no GPU)
+        run: |
+          python tests/test_aspect_parser.py
+          python tests/test_schema.py
+          python tests/test_feature_contract.py
+          python tests/test_release_r3.py
+          python tests/test_pano_explain.py
+          python tests/test_image_io.py
+          python tests/test_workers.py
+      - name: Check shipped per-image results
+        run: python tools/check_results_integrity.py
+      - name: Naive secret scan
+        shell: bash
+        run: |
+          printf '%s\n' 'ntfy''\.sh' '/ho''me/[^/[:space:]]+' '/me''dia/[^/[:space:]]+' '/Us''ers/[^/[:space:]]+' '(^|[^[:alnum:]_])sk''-' 'ghp''_' > /tmp/release-secret-patterns
+          if grep -RInI -E -f /tmp/release-secret-patterns --exclude-dir=.git .; then
+            echo 'Potential secret or private path found.' >&2
+            exit 1
+          fi

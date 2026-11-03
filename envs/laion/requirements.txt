@@ -1,0 +1,11 @@
+# Exact versions from the release environment that produced the shipped numbers.
+numpy==2.0.1
+pandas==3.0.2
+pyarrow==23.0.1
+pillow==11.2.1
+torch==2.11.0+cu128
+torchvision==0.26.0+cu128
+open_clip_torch==3.3.0
+ftfy==6.3.1
+regex==2026.9.3
+timm==1.0.29
