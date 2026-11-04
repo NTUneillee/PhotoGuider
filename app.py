@@ -335,6 +335,9 @@ PANO_FOOT = (f'<div class="pg-foot">Equirectangular, 2:1. No panorama at hand? D
              f'<a href="{PANOS_URL}">Poly Haven panoramas</a> from our user study (CC0, 900 MB). For these '
              f'panoramas the matching Poly Haven HDR (about 100 MB) is fetched on first use, as in the study.</div>')
 EMPTY_SCORES = '<div class="pg-empty">The four assessments appear here.</div>'
+SCORES_FOOT = ('<div class="pg-foot">0–100 is a percentile against human-approved crops: how strongly each '
+               'token\'s features argued for (high) or against (low) the chosen crop, relative to this '
+               'photo\'s other candidates. It is not an absolute rating of the photo.</div>')
 EMPTY_TEXT = '<div class="pg-empty">The written explanation appears here.</div>'
 
 
@@ -399,6 +402,7 @@ def build():
                             p_crop = gr.Image(label="Cropped", interactive=False, height=270, elem_classes="pg-media")
                         head("Assessments")
                         p_scores = gr.HTML(EMPTY_SCORES, elem_classes="pg-bare")
+                        gr.HTML(SCORES_FOOT, elem_classes="pg-bare")
                         head("Explanation")
                         p_text = gr.HTML(EMPTY_TEXT, elem_classes="pg-bare")
                 p_run.click(crop_photo, [p_in, p_fixed, p_ratio, p_mode, p_explain],
@@ -432,6 +436,7 @@ def build():
                             with gr.Column(scale=5):
                                 head("Assessments")
                                 v_scores = gr.HTML(EMPTY_SCORES, elem_classes=["pg-bare", "pg-fillh"])
+                                gr.HTML(SCORES_FOOT, elem_classes="pg-bare")
                         head("Explanation")
                         v_text = gr.HTML(EMPTY_TEXT, elem_classes="pg-bare")
                 v_run.click(frame_pano, [v_in, v_mode, v_explain],
