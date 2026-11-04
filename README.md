@@ -15,6 +15,7 @@
 <h3 align="center">
   🌐 <a href="https://ntuneillee.github.io/research/photoguider/">Project Page</a> |
   📄 <a href="https://arxiv.org/abs/2611.02897">Paper</a> |
+  🤗 <a href="https://huggingface.co/spaces/NeilLeeNTU/PhotoGuider">Demo</a> |
   📦 <a href="https://github.com/NTUneillee/PhotoGuider/releases/tag/release">Release Assets</a>
 </h3>
 
