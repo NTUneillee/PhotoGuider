@@ -54,6 +54,7 @@ the CPU, loading the shipped decision layer without any retraining.
 .
 ├── inference/
 │   ├── run_image.py          # CLI: one photo -> crop.jpg + result.json
+│   ├── serve.py              # resident pipeline server behind app.py (models loaded once)
 │   ├── photoguider.py        # library entry: crop_image(...) / Session
 │   ├── infer.py              # live crop pipeline (pool -> shortlist -> ranker -> gated refinement -> consultant)
 │   ├── reproduce.py          # CPU benchmark: four cells from shipped models + frozen caches (no training)
@@ -142,9 +143,10 @@ caches; obtain DINOv3 access first (see [`envs/README.md`](envs/README.md)).
   <img src="assets/app_photo.webp" width="100%" alt="PhotoGuider web app, Photo tab: an FLMS example cropped, with the crop on the original, the cropped result, the four assessments and the written explanation">
 </p>
 
-`app.py` runs both tasks in the browser. Each request calls the same command-line pipeline in the
-main environment, so the web app and the CLI return identical results; requests run one at a time
-on the GPU. After installation steps 1 and 2 (plus 3 for full mode and 4 for explanations):
+`app.py` runs both tasks in the browser. Requests go to one resident pipeline server
+(`inference/serve.py`) in the main environment that runs the same code as the CLI with its
+extractor models loaded once, so the web app and the CLI return identical results; requests run
+one at a time on the GPU. After installation steps 1 and 2 (plus 3 for full mode and 4 for explanations):
 
 ```bash
 python3 -m venv envs/gui/venv

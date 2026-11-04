@@ -57,7 +57,7 @@ def scan(pano, coarse_dir, runner):
     return merged.drop(columns="photo_id")
 
 
-def run(pano_path, mode, explain, out, hdr_path=None, scan_direction=False):
+def run(pano_path, mode, explain, out, hdr_path=None, scan_direction=False, session=None):
     if explain:
         from env_config import require_env
         require_env("explainer")                    # fail before the coarse scan
@@ -83,7 +83,9 @@ def run(pano_path, mode, explain, out, hdr_path=None, scan_direction=False):
             raise SystemExit(f"the HDR ({hdr.shape[1]}x{hdr.shape[0]}) must be the same panorama as {pano_path} ({w}x{h})")
     coarse_dir = out / "_coarse"; coarse_dir.mkdir(exist_ok=True)
     fine_dir = out / "_fine"
-    with Session(verbose=True) as session:
+    own = session is None
+    session = session or Session(verbose=True)
+    try:
         scores = scan(pano, coarse_dir, session.pool.run_op)
         hotspots = select_hotspots(scores, SCAN_PANS, SCAN_TILTS)
         if not hotspots:
@@ -102,6 +104,9 @@ def run(pano_path, mode, explain, out, hdr_path=None, scan_direction=False):
             working, gain = render_view(pano, pan0, tilt0, FOV0, W0, H0), None
         cv2.imwrite(str(out / "working_view.png"), working)
         fine = crop_image(out / "working_view.png", None, mode, explain, fine_dir, session=session)
+    finally:
+        if own:
+            session.close()
     cam = crop_to_camera(fine["box"], pan0, tilt0)
     ow, oh = final_size(cam["aspect"])
     if hdr is not None:

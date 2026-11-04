@@ -3,10 +3,10 @@
 
     envs/gui/venv/bin/python app.py [--port 7860] [--share]
 
-The GUI has its own small environment (envs/gui, Gradio only). Each request runs the command-line
-pipeline (inference/run_image.py or PanoCropping/scripts/run_pano.py) in the main environment, so
-results are identical to the CLI, and streams its progress into the page. Requests run one at a
-time on the GPU.
+The GUI has its own small environment (envs/gui, Gradio only). Requests go to one resident
+pipeline server (inference/serve.py) in the main environment, which runs the same code as the
+command-line tools with its extractor models loaded once, and streams its progress into the page.
+Requests run one at a time on the GPU.
 """
 from __future__ import annotations
 
@@ -26,8 +26,8 @@ from PIL import Image, ImageDraw, ImageOps
 
 ROOT = Path(__file__).resolve().parent
 MAIN_PY = ROOT / "envs" / "main" / "venv" / "bin" / "python"
-RUN_IMAGE = ROOT / "inference" / "run_image.py"
-RUN_PANO = ROOT / "PanoCropping" / "scripts" / "run_pano.py"
+SERVE = ROOT / "inference" / "serve.py"
+ACK = "@@ACK@@"
 # the eight panoramas ranked highest in the 360° user study (also in PolyHaven_panoramas_100.zip)
 PANO_EXAMPLES = [ROOT / "examples" / "panoramas" / f"{s}.jpg"
                  for s in ("royal_esplanade", "golden_bay", "neurathen_rock_castle", "dam_wall", "preller_drive",
@@ -61,18 +61,30 @@ def check_gpu(mode, explain):
                    "Another process is using the GPU, so the run may fail.")
 
 
-def run_streaming(cmd):
-    """Run one pipeline command; yield the growing log, then raise on a nonzero exit."""
-    env = dict(os.environ, PYTHONUNBUFFERED="1")
-    proc = subprocess.Popen(cmd, cwd=ROOT, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                            text=True, bufsize=1)
-    lines = []
-    for line in proc.stdout:
+_server = None
+
+
+def run_streaming(request):
+    """Send one request to the resident pipeline server; yield the growing log, then raise if it failed."""
+    global _server
+    if _server is None or _server.poll() is not None:
+        _server = subprocess.Popen([str(MAIN_PY), str(SERVE)], cwd=ROOT, env=dict(os.environ, PYTHONUNBUFFERED="1"),
+                                   stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                   text=True, bufsize=1)
+    _server.stdin.write(json.dumps(request) + "\n")
+    _server.stdin.flush()
+    lines, resp = [], None
+    for line in _server.stdout:
+        if line.startswith(ACK):
+            resp = json.loads(line[len(ACK):])
+            break
         lines.append(line.rstrip())
         yield "\n".join(lines[-400:])
-    if proc.wait() != 0:
-        tail = "\n".join(lines[-12:])
-        raise gr.Error(f"PhotoGuider stopped with an error:\n{tail}", duration=None)
+    if resp is None:                                  # the server died; the next request restarts it
+        _server = None
+        resp = {"ok": False, "error": "\n".join(lines[-12:])}
+    if not resp["ok"]:
+        raise gr.Error(f"PhotoGuider stopped with an error:\n{resp['error']}", duration=None)
 
 
 def new_out_dir():
@@ -173,13 +185,9 @@ def crop_photo(image_path, fixed, ratio, mode, explain):
         raise gr.Error("Choose a photograph first.")
     check_gpu(mode, explain)
     out = new_out_dir()
-    cmd = [str(MAIN_PY), str(RUN_IMAGE), image_path, "--out", str(out), "--mode", mode]
-    if fixed:
-        cmd += ["--aspect", ratio]
-    if explain:
-        cmd.append("--explain")
+    request = {"image": image_path, "aspect": ratio if fixed else None, "mode": mode, "explain": explain, "out": str(out)}
     log = ""
-    for log in run_streaming(cmd):
+    for log in run_streaming(request):
         yield None, None, EMPTY_SCORES, EMPTY_TEXT, gr.update(value=None, visible=False), log
     res = json.loads((out / "result.json").read_text())
     yield (crop_overlay(image_path, res["box"]), str(out / "crop.jpg"), scores_html(res["scores"], two=True),
@@ -192,11 +200,9 @@ def frame_pano(pano_path, mode, explain):
     check_gpu(mode, explain)
     out = new_out_dir()
     # the 100 user-study panoramas are rendered from their Poly Haven HDR, as in the study
-    cmd = [str(MAIN_PY), str(RUN_PANO), pano_path, "--out", str(out), "--mode", mode, "--hdr", "auto"]
-    if explain:
-        cmd.append("--explain")
+    request = {"pano": pano_path, "mode": mode, "explain": explain, "hdr": "auto", "out": str(out)}
     log = ""
-    for log in run_streaming(cmd):
+    for log in run_streaming(request):
         yield None, None, EMPTY_SCORES, EMPTY_TEXT, gr.update(value=None, visible=False), log
     res = json.loads((out / "result.json").read_text())
     yield (pano_overlay(pano_path, res["panorama"]), str(out / "final.png"), scores_html(res["scores"], res["panorama"]),
