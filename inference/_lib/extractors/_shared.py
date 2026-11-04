@@ -111,5 +111,24 @@ def get_sam():
         from segment_anything import sam_model_registry
         dev = "cuda" if torch.cuda.is_available() else "cpu"
         sam = sam_model_registry["vit_b"](checkpoint=str(SAM_WEIGHTS)).to(dev).eval()
+        _memoise_encoder(sam.image_encoder)
         _CACHE["sam"] = sam
     return _CACHE["sam"]
+
+
+def _memoise_encoder(enc, max_entries=48):
+    """The image encoder sees the same full image several times per image (mean embedding, patch
+    norms, the decoder's set_image, both extractor passes) and the same candidate batches in both
+    passes. Its forward is memoised on the exact input tensor, so a repeat returns the stored output."""
+    import hashlib
+    forward, cache = enc.forward, {}
+
+    def cached(x):
+        key = (tuple(x.shape), str(x.dtype), hashlib.sha1(x.detach().cpu().numpy().tobytes()).hexdigest())
+        if key not in cache:
+            if len(cache) >= max_entries:
+                cache.pop(next(iter(cache)))
+            cache[key] = forward(x)
+        return cache[key]
+
+    enc.forward = cached

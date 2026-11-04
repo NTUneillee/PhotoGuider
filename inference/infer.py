@@ -20,7 +20,7 @@ deep features come through _lib/feature_extractors.py. All maps are computed liv
 (DINOv3 saliency, InSPyReNet subject mask, CLIP-L composition attention); nothing here reads
 benchmark caches.
 """
-import sys, json, subprocess, time
+import sys, os, json, multiprocessing, subprocess, time
 from pathlib import Path
 import numpy as np, pandas as pd, joblib
 from PIL import Image
@@ -78,11 +78,31 @@ def maps_for(pid_key, vmix_2d, v1_2d, mask_np):
     return ({pid_key: (None, None, vmix_2d)}, {pid_key: (None, None, v1_2d)}, {pid_key: (None, None, mask_np)})
 
 
+_FEAT_WORKERS = int(os.environ.get("PHOTOGUIDER_WORKERS") or max(1, min(8, (os.cpu_count() or 2) - 1)))
+_FEAT_POOL = None
+
+
+def _chunk_features(args):
+    return M02.stage_c_features(args[0].reset_index(drop=True), args[1])
+
+
 def af_chain_features(dfp, vmix_2d, v1_2d, mask_np):
     """Core-feature family via the canonical code path (free-form pool and twins alike) on the
-    in-memory maps -> numerics identical to the benchmark chains."""
+    in-memory maps -> numerics identical to the benchmark chains. The per-row loop is independent
+    across rows, so a large pool is split across forked CPU workers (numpy only, never CUDA) and
+    concatenated back in order; set PHOTOGUIDER_WORKERS=1 for the serial path."""
+    global _FEAT_POOL
     maps = maps_for(dfp.photo_id.iloc[0], vmix_2d, v1_2d, mask_np)
-    return M02.stage_c_features(dfp.reset_index(drop=True), maps)
+    dfp = dfp.reset_index(drop=True)
+    if len(dfp) < 200 or _FEAT_WORKERS == 1:
+        return M02.stage_c_features(dfp, maps)
+    if _FEAT_POOL is None:
+        _FEAT_POOL = multiprocessing.get_context("fork").Pool(_FEAT_WORKERS)
+    bounds = [round(i * len(dfp) / _FEAT_WORKERS) for i in range(_FEAT_WORKERS + 1)]
+    out = pd.concat(_FEAT_POOL.map(_chunk_features, [(dfp.iloc[a:b], maps) for a, b in zip(bounds, bounds[1:]) if b > a]),
+                    ignore_index=True)
+    assert len(out) == len(dfp), "parallel candidate features lost rows"
+    return out
 
 
 # ─────────────── candidate pool (per protocol) ───────────────
