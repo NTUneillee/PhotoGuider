@@ -18,6 +18,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 import gradio as gr
@@ -87,7 +88,15 @@ def run_streaming(request):
         raise gr.Error(f"PhotoGuider stopped with an error:\n{resp['error']}", duration=None)
 
 
+KEEP_S = 3600          # a result's files (and their download links) live this long after the request
+
+
 def new_out_dir():
+    """A fresh output directory for one request; results older than KEEP_S are removed on the way."""
+    root, cutoff = Path(tempfile.gettempdir()), time.time() - KEEP_S
+    for old in root.glob("photoguider_*"):
+        if old.is_dir() and not old.is_symlink() and old.stat().st_mtime < cutoff:
+            shutil.rmtree(old, ignore_errors=True)
     return Path(tempfile.mkdtemp(prefix="photoguider_"))
 
 
@@ -375,7 +384,7 @@ def build():
         color_accent="#2e6da4",
         color_accent_soft="#eaf1f8",
     )
-    with gr.Blocks(title="PhotoGuider", theme=theme, css=CSS) as demo:
+    with gr.Blocks(title="PhotoGuider", theme=theme, css=CSS, delete_cache=(KEEP_S, KEEP_S)) as demo:
         gr.HTML(TITLE, elem_classes="pg-bare")
         with gr.Tabs(elem_classes="pg-tabs"):
             with gr.Tab("Photo"):
