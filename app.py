@@ -335,9 +335,9 @@ PANO_FOOT = (f'<div class="pg-foot">Equirectangular, 2:1. No panorama at hand? D
              f'<a href="{PANOS_URL}">Poly Haven panoramas</a> from our user study (CC0, 900 MB). For these '
              f'panoramas the matching Poly Haven HDR (about 100 MB) is fetched on first use, as in the study.</div>')
 EMPTY_SCORES = '<div class="pg-empty">The four assessments appear here.</div>'
-SCORES_FOOT = ('<div class="pg-foot">0–100 is a percentile against human-approved crops: how strongly each '
-               'token\'s features argued for (high) or against (low) the chosen crop, relative to this '
-               'photo\'s other candidates. It is not an absolute rating of the photo.</div>')
+SCORES_FOOT = ('<div class="pg-foot">Note that 0-100 is a percentile against human-preferred crops from the training '
+               'images: how strongly each token argued for (high) or against (low) the chosen crop in the '
+               'ranker\'s decision.</div>')
 EMPTY_TEXT = '<div class="pg-empty">The written explanation appears here.</div>'
 
 
