@@ -24,6 +24,19 @@ import run_pano  # noqa: E402
 ACK = "@@ACK@@"
 
 
+def handle(req, session):
+    """Run one request; the response dict for its ACK line. Bad inputs (SystemExit from the pipeline)
+    and failures inside one request are reported here and never end the server."""
+    try:
+        if "image" in req:
+            crop_image(req["image"], req.get("aspect"), req["mode"], req["explain"], req["out"], session=session)
+        else:
+            run_pano.run(req["pano"], req["mode"], req["explain"], req["out"], hdr_path=req.get("hdr"), session=session)
+        return {"ok": True, "result": str(Path(req["out"]).resolve() / "result.json")}
+    except (Exception, SystemExit) as exc:
+        return {"ok": False, "error": str(exc) or traceback.format_exc()[-1500:]}
+
+
 def main():
     sys.stdout.reconfigure(line_buffering=True)
     session = Session(verbose=True)
@@ -32,15 +45,9 @@ def main():
             if not line.strip():
                 continue
             try:
-                req = json.loads(line)
-                if "image" in req:
-                    crop_image(req["image"], req.get("aspect"), req["mode"], req["explain"], req["out"], session=session)
-                else:
-                    run_pano.run(req["pano"], req["mode"], req["explain"], req["out"], hdr_path=req.get("hdr"),
-                                 session=session)
-                resp = {"ok": True, "result": str(Path(req["out"]).resolve() / "result.json")}
-            except Exception as exc:                 # SystemExit included: bad inputs are reported this way
-                resp = {"ok": False, "error": str(exc) or traceback.format_exc()[-1500:]}
+                resp = handle(json.loads(line), session)
+            except (Exception, SystemExit) as exc:   # malformed request line
+                resp = {"ok": False, "error": f"bad request: {exc}"}
             print(ACK + json.dumps(resp), flush=True)
     finally:
         session.close()
