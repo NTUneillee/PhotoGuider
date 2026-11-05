@@ -24,6 +24,9 @@ INF_DIR = RELEASE / "inference"
 
 
 def imp(n, p):
+    m = sys.modules.get(n)                        # already imported (the web app loads photoguider first): reuse it
+    if m is not None and Path(getattr(m, "__file__", "")).resolve() == Path(p).resolve():
+        return m
     s = importlib.util.spec_from_file_location(n, str(p))
     m = importlib.util.module_from_spec(s)
     sys.modules[n] = m

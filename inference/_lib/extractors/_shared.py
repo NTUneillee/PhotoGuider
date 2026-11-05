@@ -116,19 +116,23 @@ def get_sam():
     return _CACHE["sam"]
 
 
-def _memoise_encoder(enc, max_entries=48):
+def _memoise_encoder(enc, max_entries=48, max_bytes=1 << 30):
     """The image encoder sees the same full image several times per image (mean embedding, patch
     norms, the decoder's set_image, both extractor passes) and the same candidate batches in both
-    passes. Its forward is memoised on the exact input tensor, so a repeat returns the stored output."""
+    passes. Its forward is memoised on the exact input tensor, so a repeat returns the stored output.
+    The cache holds at most ``max_entries`` outputs and ``max_bytes`` of GPU memory, so a resident
+    worker (the web app) does not grow across images."""
     import hashlib
     forward, cache = enc.forward, {}
 
     def cached(x):
         key = (tuple(x.shape), str(x.dtype), hashlib.sha1(x.detach().cpu().numpy().tobytes()).hexdigest())
         if key not in cache:
-            if len(cache) >= max_entries:
+            out = forward(x)
+            while cache and (len(cache) >= max_entries or
+                             sum(v.numel() * v.element_size() for v in cache.values()) + out.numel() * out.element_size() > max_bytes):
                 cache.pop(next(iter(cache)))
-            cache[key] = forward(x)
+            cache[key] = out
         return cache[key]
 
     enc.forward = cached
