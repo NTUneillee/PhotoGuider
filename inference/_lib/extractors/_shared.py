@@ -116,12 +116,13 @@ def get_sam():
     return _CACHE["sam"]
 
 
-def _memoise_encoder(enc, max_entries=48, max_bytes=1 << 30):
+def _memoise_encoder(enc, max_entries=160, max_bytes=3 << 29):
     """The image encoder sees the same full image several times per image (mean embedding, patch
     norms, the decoder's set_image, both extractor passes) and the same candidate batches in both
     passes. Its forward is memoised on the exact input tensor, so a repeat returns the stored output.
     The cache holds at most ``max_entries`` outputs and ``max_bytes`` of GPU memory, so a resident
-    worker (the web app) does not grow across images."""
+    worker (the web app) does not grow across images; the limits fit one panorama scan (120 views
+    plus their candidate batches) so the second extractor pass still hits."""
     import hashlib
     forward, cache = enc.forward, {}
 

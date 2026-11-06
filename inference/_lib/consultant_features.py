@@ -10,7 +10,7 @@ from PIL import Image
 
 
 from pool_sources import coverage_box, max_in_box, get_inspy_centroid, thirds_align, golden_align
-from photog_feats import crop_pixel
+from photog_feats import crop_pixel, colour_maps
 
 
 def stage_c_features(df_pool, maps):
@@ -74,6 +74,7 @@ def stage_c_features(df_pool, maps):
                 if len(rgb_cache) > 100:
                     rgb_cache = {k: v for k, v in list(rgb_cache.items())[-50:]}
             rgb = rgb_cache.get(pid)
+            lum_map, sat_map, warm_map = colour_maps(rgb) if rgb is not None else (None, None, None)
             last_pid = pid
 
         x1, y1, x2, y2 = int(r.x1), int(r.y1), int(r.x2), int(r.y2)
@@ -138,19 +139,14 @@ def stage_c_features(df_pool, maps):
         tb = abs((cx_c*(p1[1]-p2[1]) + p1[0]*(p2[1]-cy_c) + p2[0]*(cy_c-p1[1])) / 2.0)
         feats["tri_balance"][i] = tb
 
-        # Color (RGB-based)
+        # Color (RGB-based): per-pixel maps are computed once per image; a candidate reduces its
+        # own contiguous slice, which gives the same bits as computing the crop from scratch
         if rgb is not None:
-            cy_arr = rgb[y1:y2, x1:x2]
-            if cy_arr.size > 0:
-                cy_f = cy_arr.astype(np.float32) / 255.0
-                lum = 0.299*cy_f[:,:,0] + 0.587*cy_f[:,:,1] + 0.114*cy_f[:,:,2]
+            lum = np.ascontiguousarray(lum_map[y1:y2, x1:x2])
+            if lum.size > 0:
                 feats["color_var_lum"][i] = float(lum.std())
-                mx = cy_f.max(axis=2); mn = cy_f.min(axis=2)
-                sat = (mx - mn) / (mx + 1e-6)
-                feats["color_sat_mean"][i] = float(sat.mean())
-                # warm ratio: pixels where R+G > 2*B
-                warm = (cy_arr[:,:,0].astype(int) + cy_arr[:,:,1].astype(int) > 2*cy_arr[:,:,2].astype(int)).mean()
-                feats["color_warm_ratio"][i] = float(warm)
+                feats["color_sat_mean"][i] = float(np.ascontiguousarray(sat_map[y1:y2, x1:x2]).mean())
+                feats["color_warm_ratio"][i] = float(np.ascontiguousarray(warm_map[y1:y2, x1:x2]).mean())
 
         # Visual weight (saliency-weighted)
         feats["visual_weight_x"][i] = (cx_c - 0.5) * area_ratio

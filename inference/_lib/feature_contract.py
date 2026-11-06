@@ -8,7 +8,6 @@ def whole_view_rows(rows):
     result = []
     for r in rows:
         with Image.open(r["path"]) as image:
-            image.load()
             w, h = image.size
         result.append(dict(photo_id=r["vid"], image_path=r["path"], src="view",
                            x1=0., y1=0., x2=float(w), y2=float(h),
@@ -17,14 +16,13 @@ def whole_view_rows(rows):
 
 def validate_boxes(frame):
     for path, rows in frame.groupby("image_path"):
-        with Image.open(path) as image:
-            image.load()
+        with Image.open(path) as image:      # header only; the extractors decode the pixels
             w, h = image.size
         for r in rows.itertuples():
             box = np.array([r.x1, r.y1, r.x2, r.y2], dtype=float)
             if not (np.isfinite(box).all() and r.img_w == w and r.img_h == h
                     and 0 <= r.x1 < r.x2 <= w and 0 <= r.y1 < r.y2 <= h):
-                raise AssertionError(f"candidate outside decoded image or wrong dimensions: {path}, box={box}, decoded={w}x{h}")
+                raise AssertionError(f"candidate outside image or wrong dimensions: {path}, box={box}, image={w}x{h}")
 
 def validate_rows(expected, actual, name, keys=KEYS):
     for label, frame in (("expected", expected), ("actual", actual)):

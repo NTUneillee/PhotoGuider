@@ -21,6 +21,7 @@ import json
 import shutil
 import sys
 import tempfile
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import cv2
@@ -42,8 +43,12 @@ def scan(pano, coarse_dir, runner):
     for tilt in SCAN_TILTS:
         for pan in SCAN_PANS:
             path = coarse_dir / f"p{pan:03d}_t{tilt:+03d}.jpg"
-            cv2.imwrite(str(path), render_view(pano, pan, tilt, SCAN_FOV, SCAN_SIZE, SCAN_SIZE))
             rows.append({"vid": len(rows), "view": path.name, "path": str(path), "pan": pan, "tilt": tilt})
+
+    def render(r):
+        cv2.imwrite(r["path"], render_view(pano, r["pan"], r["tilt"], SCAN_FOV, SCAN_SIZE, SCAN_SIZE))
+    with ThreadPoolExecutor(max_workers=4) as ex:      # each view is independent; same pixels as the loop
+        list(ex.map(render, rows))
     maps = score.phase_maps(rows)
     with tempfile.TemporaryDirectory(prefix="features-", dir=coarse_dir) as scratch:
         frame = score.phase_deep(rows, maps, Path(scratch), runner=runner)

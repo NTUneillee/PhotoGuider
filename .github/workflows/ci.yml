@@ -27,6 +27,7 @@ jobs:
           python tests/test_aspect_parser.py
           python tests/test_schema.py
           python tests/test_feature_contract.py
+          python tests/test_colour_features.py
           python tests/test_release_r3.py
           python tests/test_pano_explain.py
           python tests/test_image_io.py

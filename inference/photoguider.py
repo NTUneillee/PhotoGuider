@@ -105,7 +105,7 @@ def _crop_image(s, ex, image, aspect, mode, explain, out, strict_aspect):
         w = orig.convert("RGB")
         if scale < 1.0:
             w = w.resize((round(orig.size[0] * scale), round(orig.size[1] * scale)), Image.LANCZOS)
-        w.save(work)
+        w.save(work, compress_level=1)          # lossless; level 1 is 4x faster than the default
         print(f"[input] {orig.size[0]}x{orig.size[1]}" + (" EXIF-rotated" if rotated else "")
               + f" -> working copy {w.size[0]}x{w.size[1]}")
     try:

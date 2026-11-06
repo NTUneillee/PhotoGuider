@@ -76,6 +76,31 @@ def get_vmix_top2_peaks_norm(sal2d):
     return peaks
 
 
+def colour_maps(rgb):
+    """Per-pixel (lum, sat, warm) maps of a whole H×W×3 uint8 image, the quantities stage_c_features
+    reduces per candidate. Elementwise, so a crop's slice holds exactly the crop's own values."""
+    f = rgb.astype(np.float32) / 255.0
+    lum = 0.299*f[:,:,0] + 0.587*f[:,:,1] + 0.114*f[:,:,2]
+    mx = f.max(axis=2); mn = f.min(axis=2)
+    sat = (mx - mn) / (mx + 1e-6)
+    warm = rgb[:,:,0].astype(int) + rgb[:,:,1].astype(int) > 2*rgb[:,:,2].astype(int)   # R+G > 2B
+    return lum, sat, warm
+
+
+_HSV_MAPS = (None, None)      # (rgb array, its (V, S, warm) maps): the pool calls color_stats_box per box
+
+
+def _hsv_maps(rgb):
+    """(V, S, warm-hue) per-pixel maps of the whole image, computed once per image."""
+    global _HSV_MAPS
+    if _HSV_MAPS[0] is not rgb:
+        r = rgb[..., 0].astype(np.float32) / 255.0
+        g = rgb[..., 1].astype(np.float32) / 255.0
+        b = rgb[..., 2].astype(np.float32) / 255.0
+        _HSV_MAPS = (rgb, _hsv_from_rgb(r, g, b))
+    return _HSV_MAPS[1]
+
+
 def color_stats_box(rgb, x1, y1, x2, y2, W, H):
     """rgb: H×W×3 uint8 PIL array. Returns (lum_var, warm_ratio, sat_mean)."""
     if rgb is None:
@@ -85,13 +110,17 @@ def color_stats_box(rgb, x1, y1, x2, y2, W, H):
     py1 = max(0, min(int(y1 / H * h_p), h_p - 1))
     px2 = max(px1 + 1, min(int(np.ceil(x2 / W * w_p)), w_p))
     py2 = max(py1 + 1, min(int(np.ceil(y2 / H * h_p)), h_p))
-    sub = rgb[py1:py2, px1:px2]
-    if sub.size < 9:
+    if (py2 - py1) * (px2 - px1) * 3 < 9:
         return (0.0, 0.0, 0.0)
-    # Convert to HSV (cheap via numpy)
-    r = sub[..., 0].astype(np.float32) / 255.0
-    g = sub[..., 1].astype(np.float32) / 255.0
-    b = sub[..., 2].astype(np.float32) / 255.0
+    V, S, warm = (np.ascontiguousarray(m[py1:py2, px1:px2]) for m in _hsv_maps(rgb))
+    lum_var = float(V.std())
+    warm_ratio = float(warm.sum() / V.size)
+    sat_mean = float(S.mean())
+    return (lum_var, warm_ratio, sat_mean)
+
+
+def _hsv_from_rgb(r, g, b):
+    """(V, S, warm) from float32 planes; warm = hue < 60 or > 300 degrees."""
     cmax = np.maximum(np.maximum(r, g), b)
     cmin = np.minimum(np.minimum(r, g), b)
     delta = cmax - cmin
@@ -108,10 +137,7 @@ def color_stats_box(rgb, x1, y1, x2, y2, W, H):
     H_arr = np.where(bmax, (r - g) / np.maximum(delta, 1e-9) + 4, H_arr)
     H_arr = H_arr * 60.0
     H_arr = np.where(H_arr < 0, H_arr + 360, H_arr)
-    lum_var = float(V.std())
-    warm_ratio = float(((H_arr < 60) | (H_arr > 300)).sum() / V.size)
-    sat_mean = float(S.mean())
-    return (lum_var, warm_ratio, sat_mean)
+    return V, S, (H_arr < 60) | (H_arr > 300)
 
 
 def cnt_balance(sal2d, x1, y1, x2, y2, W, H):

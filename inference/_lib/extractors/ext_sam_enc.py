@@ -118,8 +118,8 @@ def stage_44_1_image_emb(sam_model):
         if (i // BATCH) % 10 == 0:
             log(f"  {i+len(chunk)}/{len(items)} ({time.time()-t0:.0f}s)")
     embs = np.concatenate(out_embs)
-    df_out = pd.DataFrame({"photo_id": out_idxs})
-    for j in range(EMB_DIM): df_out[f"e{j}"] = embs[:, j]
+    df_out = pd.DataFrame(embs, columns=[f"e{j}" for j in range(EMB_DIM)])
+    df_out.insert(0, "photo_id", out_idxs)
     df_out.to_parquet(IMG_EMB, index=False)
     log(f"  saved {IMG_EMB.name} {df_out.shape}")
 
@@ -162,11 +162,9 @@ def stage_44_2_cand_emb(sam_model):
         if (i // BATCH) % 50 == 0:
             log(f"  {i+len(chunk)}/{len(items)} ({time.time()-t0:.0f}s)")
     embs = np.concatenate(out_embs)
-    df_out = pd.DataFrame({
-        "photo_id": [x[0] for x in out_idxs],
-        "dpp_rank": [x[1] for x in out_idxs],
-    })
-    for j in range(EMB_DIM): df_out[f"e{j}"] = embs[:, j]
+    df_out = pd.DataFrame(embs, columns=[f"e{j}" for j in range(EMB_DIM)])
+    df_out.insert(0, "dpp_rank", [x[1] for x in out_idxs])
+    df_out.insert(0, "photo_id", [x[0] for x in out_idxs])
     df_out.to_parquet(CAND_EMB, index=False)
     log(f"  saved {CAND_EMB.name} {df_out.shape}")
 
@@ -239,9 +237,8 @@ def stage_46_B_encode(sam_model):
 
     pids = [r["photo_id"] for r in out_rows]
     patch_mat = np.stack([r["patch_norms_flat"] for r in out_rows])
-    df_save = pd.DataFrame({"photo_id": pids})
-    for i in range(patch_mat.shape[1]):
-        df_save[f"p{i}"] = patch_mat[:, i]
+    df_save = pd.DataFrame(patch_mat, columns=[f"p{i}" for i in range(patch_mat.shape[1])])
+    df_save.insert(0, "photo_id", pids)
     df_save.to_parquet(IMG_PATCH, index=False)
     log(f"  saved {IMG_PATCH.name} {df_save.shape}")
 
