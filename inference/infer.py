@@ -63,10 +63,9 @@ def get_saliency_mask(image_path):
     import feat_saliency as FS
     print("[saliency] generating live (DINOv3 attn+PCA + InSPyReNet)")
     vmix, v1d = FS.build_saliency(image_path); mk = FS.build_mask(image_path)
-    # release the live models' GPU memory before the extractor subprocesses run (they need the
-    # GPU too; keeping ~12GB of saliency-model cache resident OOMs ext_sam_* on 16GB cards)
+    # the two saliency models stay loaded (DINOv3-small + InSPyReNet, ~1.5 GB); only the per-image
+    # activations are returned to the driver before the extractor workers run on the same GPU
     try:
-        FS._STATE.clear()
         import gc, torch as _t; gc.collect(); _t.cuda.empty_cache()
     except Exception:
         pass

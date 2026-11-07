@@ -22,6 +22,7 @@ import os
 import pickle
 import subprocess
 import tempfile
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -96,6 +97,24 @@ class Extractors:
     def run(self, op, args=None):
         return self.runner(op, {"scratch": str(self.scratch), **(args or {})})
 
+    def _run_concurrently(self, ops):
+        """Run ``ops`` with one thread per environment: ops of different environments overlap (each is
+        its own worker process), ops sharing an environment keep their order. Returns the failed ops."""
+        by_env = {}
+        for op in ops:
+            by_env.setdefault(OP_ENV[op], []).append(op)
+
+        def run_chain(chain):
+            failed = []
+            for op in chain:
+                print(f"[deep] {op} ...", flush=True)
+                if not self.run(op):
+                    failed.append(op)
+            return failed
+
+        with ThreadPoolExecutor(max_workers=len(by_env)) as tp:
+            return [op for failed in tp.map(run_chain, by_env.values()) for op in failed]
+
     # ── the 51 deep features for a candidate frame ──
     def deep(self, frame, subject_masks=None):
         """Run the five deep extractors on ``frame`` (needs photo_id, dpp_rank, image_path, box, img_w/h)
@@ -117,11 +136,7 @@ class Extractors:
             pickle.dump({k: (None, None, v[2]) for k, v in subject_masks.items()}, open(masks, "wb"))
         else:
             masks.unlink(missing_ok=True)
-        failed = []
-        for op in DEEP_OUTPUTS:
-            print(f"[deep] {op} ...", flush=True)
-            if not self.run(op):
-                failed.append(op)
+        failed = self._run_concurrently(list(DEEP_OUTPUTS))
         absent = sorted({op for op, fs in DEEP_OUTPUTS.items()
                          if any(not (self.scratch / f"{f}.parquet").exists() for f in fs)} | set(failed))
         if absent:
@@ -148,9 +163,9 @@ class Extractors:
         df = pd.DataFrame(rows)
         validate_boxes(df)
         df.to_parquet(self.scratch / "refine_crops.parquet")
-        for op in ("score_crops_laion", "score_crops_fgaesq"):
-            if not self.run(op):
-                raise RuntimeError(f"refinement feature extraction failed: {op}")
+        failed = self._run_concurrently(["score_crops_laion", "score_crops_fgaesq"])
+        if failed:
+            raise RuntimeError(f"refinement feature extraction failed: {', '.join(failed)}")
         out = []
         for name in ("laion", "fgaesq"):
             got = pd.read_parquet(self.scratch / f"refine_{name}.parquet")
