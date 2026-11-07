@@ -112,8 +112,12 @@ class Extractors:
                     failed.append(op)
             return failed
 
-        with ThreadPoolExecutor(max_workers=len(by_env)) as tp:
-            return [op for failed in tp.map(run_chain, by_env.values()) for op in failed]
+        # The SAM encoder transiently needs ~10 GB on a panorama's crop set; on a 16 GB card that
+        # overlaps badly with the other workers starting up, so its chain runs after the others.
+        sam_chain = by_env.pop("sam", [])
+        with ThreadPoolExecutor(max_workers=max(1, len(by_env))) as tp:
+            failed = [op for f in tp.map(run_chain, by_env.values()) for op in f]
+        return failed + run_chain(sam_chain)
 
     # ── the 51 deep features for a candidate frame ──
     def deep(self, frame, subject_masks=None):
