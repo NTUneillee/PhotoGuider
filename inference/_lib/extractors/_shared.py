@@ -123,17 +123,18 @@ def _memoise_encoder(enc, max_entries=160, max_bytes=3 << 29):
     The cache holds at most ``max_entries`` outputs and ``max_bytes`` of GPU memory, so a resident
     worker (the web app) does not grow across images; the limits fit one panorama scan (120 views
     plus their candidate batches) so the second extractor pass still hits."""
-    import hashlib
-    forward, cache = enc.forward, {}
+    import hashlib, threading
+    forward, cache, lock = enc.forward, {}, threading.Lock()   # the decoder extractor calls in from several threads
 
     def cached(x):
         key = (tuple(x.shape), str(x.dtype), hashlib.sha1(x.detach().cpu().numpy().tobytes()).hexdigest())
-        if key not in cache:
-            out = forward(x)
-            while cache and (len(cache) >= max_entries or
-                             sum(v.numel() * v.element_size() for v in cache.values()) + out.numel() * out.element_size() > max_bytes):
-                cache.pop(next(iter(cache)))
-            cache[key] = out
-        return cache[key]
+        with lock:
+            if key not in cache:
+                out = forward(x)
+                while cache and (len(cache) >= max_entries or
+                                 sum(v.numel() * v.element_size() for v in cache.values()) + out.numel() * out.element_size() > max_bytes):
+                    cache.pop(next(iter(cache)))
+                cache[key] = out
+            return cache[key]
 
     enc.forward = cached

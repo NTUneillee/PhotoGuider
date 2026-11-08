@@ -56,82 +56,93 @@ def _load_flms_k10():
 
 
 # ─────────── Stage dec.1: axes 1+2+4 ───────────
+N_THREADS = 4   # panorama scans hand this extractor 120 independent views; the per-view work is mostly CPU
+
+
+def _per_photo(df, work):
+    """Run ``work(pid, sub)`` for each photo's candidate block (``sub`` in the block's row order) and
+    return the rows in the block order of ``df``. Photos are independent, so with several photos
+    they run on ``N_THREADS`` threads; a single photo runs inline exactly as before."""
+    blocks = [(pid, sub.reset_index(drop=True)) for pid, sub in df.groupby("photo_id", sort=False)]
+    if len(blocks) == 1:
+        return work(*blocks[0])
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=min(N_THREADS, len(blocks))) as tp:
+        results = list(tp.map(lambda b: work(*b), blocks))
+    return [row for rows in results for row in rows]
+
+
+def _read_rgb(path):
+    try:
+        return np.asarray(Image.open(path).convert("RGB"))
+    except Exception as exc:
+        raise RuntimeError(f"cannot decode candidate image {path}") from exc
+
+
 def stage_a124():
     if A124_CACHE.exists():
         print(f"[dec.1] cached: {A124_CACHE.name}", flush=True); return
     print("[dec.1] Single-prompt SAM (axes 1+2+4) on FLMS 5000 cands", flush=True)
     from segment_anything import SamPredictor
     sam = _shared.get_sam()
-    predictor = SamPredictor(sam)
     df = _load_flms_k10()
-    rows = []
-    last_pid = None; last_img_arr = None
     t0 = time.time()
-    pid_count = 0
-    n_cands = len(df)
-    for i, r in enumerate(df.itertuples(index=False)):
-        pid = r.photo_id
-        if pid != last_pid:
-            try:
-                img = np.asarray(Image.open(r.image_path).convert("RGB"))
-            except Exception as exc:
-                raise RuntimeError(f"cannot decode candidate image {r.image_path}") from exc
-            predictor.set_image(img)
-            last_img_arr = img
-            last_pid = pid
-            pid_count += 1
-            if pid_count % 25 == 0:
-                rate = (i+1) / max(1e-6, time.time()-t0)
-                eta = (n_cands-i-1) / max(rate, 1e-6)
-                print(f"  [dec.1] {i+1}/{n_cands} ({pid_count} pids) {rate:.1f}/s ETA {eta:.0f}s",
-                      flush=True)
-        H, W = last_img_arr.shape[:2]
-        x1, y1, x2, y2 = int(r.x1), int(r.y1), int(r.x2), int(r.y2)
-        cx, cy = (x1+x2)//2, (y1+y2)//2
-        cand_mask = _bbox_to_mask((x1, y1, x2, y2), H, W)
-        with torch.no_grad():
-            masks, scores, _ = predictor.predict(
-                point_coords=np.array([[cx, cy]]),
-                point_labels=np.array([1]),
-                multimask_output=True,
-            )
-        ax1_q_top1 = float(scores.max())
-        ax1_q_mean = float(scores.mean())
-        ax1_q_std = float(scores.std())
-        ax1_q_margin = float(scores.max() - scores.mean())
 
-        areas = masks.reshape(3, -1).sum(axis=1).astype(np.float32)
-        ax2_area_cv = float(areas.std() / max(areas.mean(), 1))
-        ax2_iou_top12 = float(_mask_iou(masks[0], masks[1]))
-        cand_matches = [_mask_iou(masks[k], cand_mask) for k in range(3)]
-        ax2_cand_match_max = float(max(cand_matches))
-        ax2_match_layer = int(np.argmax(cand_matches))
+    def work(pid, sub):
+        predictor = SamPredictor(sam)
+        img = _read_rgb(sub.image_path[0])
+        predictor.set_image(img)
+        H, W = img.shape[:2]
+        rows = []
+        for r in sub.itertuples(index=False):
+            x1, y1, x2, y2 = int(r.x1), int(r.y1), int(r.x2), int(r.y2)
+            cx, cy = (x1+x2)//2, (y1+y2)//2
+            cand_mask = _bbox_to_mask((x1, y1, x2, y2), H, W)
+            with torch.no_grad():
+                masks, scores, _ = predictor.predict(
+                    point_coords=np.array([[cx, cy]]),
+                    point_labels=np.array([1]),
+                    multimask_output=True,
+                )
+            ax1_q_top1 = float(scores.max())
+            ax1_q_mean = float(scores.mean())
+            ax1_q_std = float(scores.std())
+            ax1_q_margin = float(scores.max() - scores.mean())
 
-        best_mask = masks[int(np.argmax(scores))]
-        cand_region = last_img_arr[y1:y2, x1:x2]
-        cand_best_mask = best_mask[y1:y2, x1:x2]
-        if cand_region.size == 0 or cand_best_mask.sum() < 4 or (~cand_best_mask).sum() < 4:
-            ax4_sat_diff = 0.0; ax4_val_diff = 0.0; ax4_lab_dist = 0.0; ax4_fg_var = 0.0
-        else:
-            hsv = cv2.cvtColor(cand_region, cv2.COLOR_RGB2HSV).astype(np.float32)
-            lab = cv2.cvtColor(cand_region, cv2.COLOR_RGB2LAB).astype(np.float32)
-            fg_idx = cand_best_mask; bg_idx = ~cand_best_mask
-            ax4_sat_diff = float(hsv[..., 1][fg_idx].mean() - hsv[..., 1][bg_idx].mean())
-            ax4_val_diff = float(hsv[..., 2][fg_idx].mean() - hsv[..., 2][bg_idx].mean())
-            fg_lab_mean = lab[fg_idx].mean(axis=0); bg_lab_mean = lab[bg_idx].mean(axis=0)
-            ax4_lab_dist = float(np.linalg.norm(fg_lab_mean - bg_lab_mean))
-            ax4_fg_var = float(lab[fg_idx].std(axis=0).mean())
+            areas = masks.reshape(3, -1).sum(axis=1).astype(np.float32)
+            ax2_area_cv = float(areas.std() / max(areas.mean(), 1))
+            ax2_iou_top12 = float(_mask_iou(masks[0], masks[1]))
+            cand_matches = [_mask_iou(masks[k], cand_mask) for k in range(3)]
+            ax2_cand_match_max = float(max(cand_matches))
+            ax2_match_layer = int(np.argmax(cand_matches))
 
-        rows.append({
-            "photo_id": pid, "dpp_rank": int(r.dpp_rank),
-            "sam_mask_q_top1": ax1_q_top1, "sam_mask_q_mean": ax1_q_mean,
-            "sam_mask_q_std": ax1_q_std, "sam_mask_q_margin": ax1_q_margin,
-            "sam_h_area_cv": ax2_area_cv, "sam_h_iou_top12": ax2_iou_top12,
-            "sam_h_cand_match_max": ax2_cand_match_max, "sam_h_match_layer": ax2_match_layer,
-            "sam_fg_bg_sat_diff": ax4_sat_diff, "sam_fg_bg_val_diff": ax4_val_diff,
-            "sam_fg_bg_lab_dist": ax4_lab_dist, "sam_fg_var": ax4_fg_var,
-        })
+            best_mask = masks[int(np.argmax(scores))]
+            cand_region = img[y1:y2, x1:x2]
+            cand_best_mask = best_mask[y1:y2, x1:x2]
+            if cand_region.size == 0 or cand_best_mask.sum() < 4 or (~cand_best_mask).sum() < 4:
+                ax4_sat_diff = 0.0; ax4_val_diff = 0.0; ax4_lab_dist = 0.0; ax4_fg_var = 0.0
+            else:
+                hsv = cv2.cvtColor(cand_region, cv2.COLOR_RGB2HSV).astype(np.float32)
+                lab = cv2.cvtColor(cand_region, cv2.COLOR_RGB2LAB).astype(np.float32)
+                fg_idx = cand_best_mask; bg_idx = ~cand_best_mask
+                ax4_sat_diff = float(hsv[..., 1][fg_idx].mean() - hsv[..., 1][bg_idx].mean())
+                ax4_val_diff = float(hsv[..., 2][fg_idx].mean() - hsv[..., 2][bg_idx].mean())
+                fg_lab_mean = lab[fg_idx].mean(axis=0); bg_lab_mean = lab[bg_idx].mean(axis=0)
+                ax4_lab_dist = float(np.linalg.norm(fg_lab_mean - bg_lab_mean))
+                ax4_fg_var = float(lab[fg_idx].std(axis=0).mean())
 
+            rows.append({
+                "photo_id": pid, "dpp_rank": int(r.dpp_rank),
+                "sam_mask_q_top1": ax1_q_top1, "sam_mask_q_mean": ax1_q_mean,
+                "sam_mask_q_std": ax1_q_std, "sam_mask_q_margin": ax1_q_margin,
+                "sam_h_area_cv": ax2_area_cv, "sam_h_iou_top12": ax2_iou_top12,
+                "sam_h_cand_match_max": ax2_cand_match_max, "sam_h_match_layer": ax2_match_layer,
+                "sam_fg_bg_sat_diff": ax4_sat_diff, "sam_fg_bg_val_diff": ax4_val_diff,
+                "sam_fg_bg_lab_dist": ax4_lab_dist, "sam_fg_var": ax4_fg_var,
+            })
+        return rows
+
+    rows = _per_photo(df, work)
     pd.DataFrame(rows).to_parquet(A124_CACHE, index=False)
     print(f"[dec.1] saved {A124_CACHE.name} {len(rows)} ({time.time()-t0:.0f}s)", flush=True)
     print(f"[extractor] SAM-decoder: decoder feature groups 1, 2, and 4 done: {len(rows)}", flush=True)
@@ -144,27 +155,20 @@ def stage_a3():
     print("[dec.2] SAM auto-mask FLMS 500 imgs (axis 3)", flush=True)
     from segment_anything import SamAutomaticMaskGenerator
     sam = _shared.get_sam()
-    mask_generator = SamAutomaticMaskGenerator(
-        sam, points_per_side=16, pred_iou_thresh=0.85,
-        stability_score_thresh=0.92, crop_n_layers=0, min_mask_region_area=100,
-    )
     df = _load_flms_k10()
-    pid_to_cands = {pid: sub.reset_index(drop=True) for pid, sub in df.groupby("photo_id")}
-    pids_unique = df.drop_duplicates("photo_id").reset_index(drop=True)
     t0 = time.time()
-    rows = []
-    for i, r in enumerate(pids_unique.itertuples(index=False)):
-        pid = r.photo_id
-        try:
-            img = np.asarray(Image.open(r.image_path).convert("RGB"))
-        except Exception as exc:
-            raise RuntimeError(f"cannot decode candidate image {r.image_path}") from exc
+
+    def work(pid, cands_here):
+        mask_generator = SamAutomaticMaskGenerator(
+            sam, points_per_side=16, pred_iou_thresh=0.85,
+            stability_score_thresh=0.92, crop_n_layers=0, min_mask_region_area=100,
+        )
+        img = _read_rgb(cands_here.image_path[0])
         H, W = img.shape[:2]
         with torch.no_grad():
             masks_data = mask_generator.generate(img)
-        cands_here = pid_to_cands.get(pid)
-        if cands_here is None: continue
         seg_areas = [(m["segmentation"], int(m["area"])) for m in masks_data]
+        rows = []
         for c in cands_here.itertuples(index=False):
             x1, y1, x2, y2 = int(c.x1), int(c.y1), int(c.x2), int(c.y2)
             cand_area = max((x2-x1)*(y2-y1), 1)
@@ -192,12 +196,9 @@ def stage_a3():
                 "sam_obj_area_cv": obj_cv,
                 "sam_dominant_ratio": dom_ratio,
             })
-        del seg_areas, masks_data
-        if (i+1) % 50 == 0 or i+1 == len(pids_unique):
-            rate = (i+1) / max(1e-6, time.time()-t0)
-            eta = (len(pids_unique)-i-1) / max(rate, 1e-6)
-            print(f"  [dec.2] {i+1}/{len(pids_unique)} {rate:.2f}/s ETA {eta:.0f}s",
-                  flush=True)
+        return rows
+
+    rows = _per_photo(df, work)
     pd.DataFrame(rows).to_parquet(A3_CACHE, index=False)
     print(f"[dec.2] saved {A3_CACHE.name} {len(rows)} ({time.time()-t0:.0f}s)", flush=True)
     print(f"[extractor] SAM-decoder: decoder feature group 3 done: {len(rows)}", flush=True)
@@ -210,54 +211,47 @@ def stage_a5():
     print("[dec.3] Multi-prompt SAM at thirds (axis 5)", flush=True)
     from segment_anything import SamPredictor
     sam = _shared.get_sam()
-    predictor = SamPredictor(sam)
 
     a124 = pd.read_parquet(A124_CACHE)
     a124_map = a124.set_index(["photo_id", "dpp_rank"])["sam_mask_q_top1"].to_dict()
 
     df = _load_flms_k10()
-    rows = []
-    last_pid = None
     t0 = time.time()
-    for i, r in enumerate(df.itertuples(index=False)):
-        pid = r.photo_id
-        if pid != last_pid:
-            try:
-                img = np.asarray(Image.open(r.image_path).convert("RGB"))
-            except Exception as exc:
-                raise RuntimeError(f"cannot decode candidate image {r.image_path}") from exc
-            predictor.set_image(img)
-            last_pid = pid
-            if i % 200 == 0:
-                rate = (i+1) / max(1e-6, time.time()-t0)
-                eta = (len(df)-i-1) / max(rate, 1e-6)
-                print(f"  [dec.3] {i+1}/{len(df)} {rate:.1f}/s ETA {eta:.0f}s", flush=True)
-        x1, y1, x2, y2 = int(r.x1), int(r.y1), int(r.x2), int(r.y2)
-        cw, ch = x2-x1, y2-y1
-        thirds_pts = [
-            (x1 + cw//3, y1 + ch//3),
-            (x1 + 2*cw//3, y1 + ch//3),
-            (x1 + cw//3, y1 + 2*ch//3),
-            (x1 + 2*cw//3, y1 + 2*ch//3),
-        ]
-        per_pt_q = []
-        with torch.no_grad():
-            for pt in thirds_pts:
-                _, scores, _ = predictor.predict(
-                    point_coords=np.array([pt]), point_labels=np.array([1]),
-                    multimask_output=True,
-                )
-                per_pt_q.append(float(scores.max()))
-        thirds_q_mean = float(np.mean(per_pt_q))
-        thirds_q_max = float(np.max(per_pt_q))
-        center_q = a124_map.get((pid, int(r.dpp_rank)), thirds_q_mean)
-        thirds_vs_center = thirds_q_mean - center_q
-        rows.append({
-            "photo_id": pid, "dpp_rank": int(r.dpp_rank),
-            "sam_thirds_q_mean": thirds_q_mean,
-            "sam_thirds_q_max": thirds_q_max,
-            "sam_thirds_vs_center": thirds_vs_center,
-        })
+
+    def work(pid, sub):
+        predictor = SamPredictor(sam)
+        predictor.set_image(_read_rgb(sub.image_path[0]))
+        rows = []
+        for r in sub.itertuples(index=False):
+            x1, y1, x2, y2 = int(r.x1), int(r.y1), int(r.x2), int(r.y2)
+            cw, ch = x2-x1, y2-y1
+            thirds_pts = [
+                (x1 + cw//3, y1 + ch//3),
+                (x1 + 2*cw//3, y1 + ch//3),
+                (x1 + cw//3, y1 + 2*ch//3),
+                (x1 + 2*cw//3, y1 + 2*ch//3),
+            ]
+            per_pt_q = []
+            with torch.no_grad():
+                for pt in thirds_pts:
+                    _, scores, _ = predictor.predict(
+                        point_coords=np.array([pt]), point_labels=np.array([1]),
+                        multimask_output=True,
+                    )
+                    per_pt_q.append(float(scores.max()))
+            thirds_q_mean = float(np.mean(per_pt_q))
+            thirds_q_max = float(np.max(per_pt_q))
+            center_q = a124_map.get((pid, int(r.dpp_rank)), thirds_q_mean)
+            thirds_vs_center = thirds_q_mean - center_q
+            rows.append({
+                "photo_id": pid, "dpp_rank": int(r.dpp_rank),
+                "sam_thirds_q_mean": thirds_q_mean,
+                "sam_thirds_q_max": thirds_q_max,
+                "sam_thirds_vs_center": thirds_vs_center,
+            })
+        return rows
+
+    rows = _per_photo(df, work)
     pd.DataFrame(rows).to_parquet(A5_CACHE, index=False)
     print(f"[dec.3] saved {A5_CACHE.name} {len(rows)} ({time.time()-t0:.0f}s)", flush=True)
     print(f"[extractor] SAM-decoder: decoder feature group 5 done: {len(rows)}", flush=True)
