@@ -65,30 +65,47 @@ def check_gpu(mode, explain):
 
 
 _server = None
+_start_error = None    # the last log lines of a server that died before READY (shown on the next request)
 
 
 def start_server():
-    """Start the resident pipeline server and wait until its models are loaded."""
-    global _server
-    _server = subprocess.Popen([str(MAIN_PY), str(SERVE)], cwd=ROOT, env=dict(os.environ, PYTHONUNBUFFERED="1"),
-                               stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                               text=True, bufsize=1)
-    for line in _server.stdout:
+    """Start the resident pipeline server and wait until its models are loaded. Returns True once it
+    is ready; if it exits first (a model failed to load, the main environment is broken) leaves
+    `_server` None, keeps the tail of its output in `_start_error` and returns False."""
+    global _server, _start_error
+    proc = subprocess.Popen([str(MAIN_PY), str(SERVE)], cwd=ROOT, env=dict(os.environ, PYTHONUNBUFFERED="1"),
+                            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                            text=True, bufsize=1)
+    tail = []
+    for line in proc.stdout:
         if line.startswith(READY):
-            return
+            _server, _start_error = proc, None
+            return True
         print(line, end="", flush=True)
+        tail.append(line.rstrip())
+    proc.wait()
     _server = None                                    # it died while loading; a request restarts it
+    _start_error = "\n".join(tail[-12:]) or f"the server exited with code {proc.returncode} without output"
+    print(f"PhotoGuider server exited with code {proc.returncode} before it was ready; "
+          "the next request will try again", flush=True)
+    return False
 
 
 def run_streaming(request):
     """Send one request to the resident pipeline server. Yields ("log", text) as output arrives and
     ("partial", result_path) once the crop is on disk and only the explanation is pending; raises if
-    the request failed."""
+    the server could not start or the request failed."""
     global _server
     if _server is None or _server.poll() is not None:
-        start_server()
-    _server.stdin.write(json.dumps(request) + "\n")
-    _server.stdin.flush()
+        if not start_server():
+            raise gr.Error("PhotoGuider could not start its pipeline server (see the terminal for the "
+                           f"full log):\n{_start_error}", duration=None)
+    try:
+        _server.stdin.write(json.dumps(request) + "\n")
+        _server.stdin.flush()
+    except (BrokenPipeError, OSError) as exc:         # it died between requests; the next one restarts it
+        _server = None
+        raise gr.Error(f"PhotoGuider's pipeline server is not running ({exc}); please try again.", duration=None)
     lines, resp = [], None
     for line in _server.stdout:
         if line.startswith(ACK):
@@ -498,7 +515,8 @@ def main():
     if not MAIN_PY.is_file():
         sys.exit(f"main environment not found at {MAIN_PY}; run envs/setup_envs.sh first")
     shutil.which("nvidia-smi") or print("nvidia-smi not found; GPU memory checks are skipped")
-    start_server()                                    # load the models now, not on the first request
+    if not start_server():                            # load the models now, not on the first request
+        print("Starting the web app anyway; each request will retry and show the error in the page", flush=True)
     build().launch(server_name=a.host, server_port=a.port, share=a.share)
 
 

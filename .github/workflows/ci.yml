@@ -32,6 +32,7 @@ jobs:
           python tests/test_pano_explain.py
           python tests/test_image_io.py
           python tests/test_workers.py
+          python tests/test_app_start.py
       - name: Check shipped per-image results
         run: python tools/check_results_integrity.py
       - name: Naive secret scan
