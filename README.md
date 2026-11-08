@@ -94,7 +94,8 @@ Linux x86-64, **Python 3.12.7**, an NVIDIA GPU with a CUDA 12.8 driver (the pinn
 are `cu128`). Live inference needs the GPU model assets; the benchmark reproduction is pure CPU.
 Validated revisions, checkpoint hashes and environment versions are in `envs/asset_pins.json`.
 Disk: about 45 GB for the six environments plus 5 GB of first-use weights (fast mode), 18 GB more
-for Venus (full mode) and 16 GB for the Qwen base model (`--explain`); about 85 GB for everything.
+for Venus (full mode) and 6 GB for the NF4 explainer base (`--explain`; 16 GB if the bf16 Qwen
+checkpoint is used instead); about 75 GB for everything.
 Panoramas run with `--hdr auto` add about 100 MB per user-study scene for its downloaded HDR.
 
 1. Install the system tools (Debian/Ubuntu) and select Python 3.12.7 as `python3`:
@@ -133,16 +134,17 @@ Panoramas run with `--hdr auto` add about 100 MB per user-study scene for its do
 
    ```bash
    bash tools/download_explainer.sh
-   envs/explainer/venv/bin/python tools/save_explainer_nf4.py   # optional, once: faster explainer loads
+   envs/explainer/venv/bin/python tools/download_explainer_nf4.py   # recommended: the 6 GB NF4 base
    ```
 
-   The explainer is Qwen2.5-VL-7B in 4-bit NF4 with the release adapter. By default every
-   explanation quantizes the 16 GB bf16 checkpoint on load; `save_explainer_nf4.py` stores the
-   quantized weights once (6 GB, `inference/models/explainer_nf4/`) so later loads read a third
-   of the data. The decoded text is identical either way.
+   The explainer is Qwen2.5-VL-7B in 4-bit NF4 with the release adapter. Without the second
+   download every explanation fetches and quantizes the 16 GB bf16 checkpoint on load;
+   [`PhotoGuider-explainer-nf4`](https://huggingface.co/NeilLeeNTU/PhotoGuider-explainer-nf4)
+   is the same quantization saved once (`inference/models/explainer_nf4/`; `tools/save_explainer_nf4.py`
+   reproduces it from the base checkpoint). The decoded text is identical either way.
 
-CLIP, DINOv3, InSPyReNet and the Qwen base model download on first use into their library
-caches; obtain DINOv3 access first (see [`envs/README.md`](envs/README.md)).
+CLIP, DINOv3, InSPyReNet (and the Qwen base model, if the NF4 base is not installed) download on
+first use into their library caches; obtain DINOv3 access first (see [`envs/README.md`](envs/README.md)).
 
 ## Web App
 
