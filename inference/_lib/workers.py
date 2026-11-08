@@ -42,6 +42,11 @@ class ExtractorPool:
         if self.verbose:
             print(f"[pool] {msg}", flush=True)
 
+    def warm(self):
+        """Start every extractor worker now instead of on the first request."""
+        for env_key in ENV_PY:
+            self._ensure(env_key)
+
     def _ensure(self, env_key):
         """Return a live worker for env_key, or None if it must fall back to cold runs."""
         p = self.procs.get(env_key)

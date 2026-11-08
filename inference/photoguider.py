@@ -70,6 +70,9 @@ class Session:
         self.close()
 
 
+PARTIAL = "@@PARTIAL@@"      # stdout marker: the crop and its assessments are on disk, the explanation is still being written
+
+
 def crop_image(image, aspect, mode, explain, out, session=None, strict_aspect=True):
     if mode not in ("fast", "full"):
         raise ValueError(f"mode must be 'fast' or 'full', got {mode!r}")
@@ -88,14 +91,45 @@ def crop_image(image, aspect, mode, explain, out, session=None, strict_aspect=Tr
     own = session is None
     s = session or Session()
     try:
-        with Extractors.temporary(runner=s.pool.run_op, release=s.pool.close) as ex:
-            return _crop_image(s, ex, image, aspect, mode, explain, out, strict_aspect)
+        result, prompt = crop_only(s, image, aspect, mode, out, strict_aspect)
+        write_result(out, result, final=not explain)
+        if explain:
+            result["explanation"] = explain_crop(s.pool, out / "crop.jpg", prompt)
+            write_result(out, result)
+        return result
     finally:
         if own:
             s.close()
 
 
-def _crop_image(s, ex, image, aspect, mode, explain, out, strict_aspect):
+def crop_only(s, image, aspect, mode, out, strict_aspect=True):
+    """The crop, its assessments and the explanation prompt, without running the explainer:
+    (result with explanation None, prompt). ``out`` receives crop.jpg."""
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    with Extractors.temporary(runner=s.pool.run_op, release=s.pool.close) as ex:
+        return _crop_image(s, ex, Path(image), aspect, mode, out, strict_aspect)
+
+
+def explain_crop(pool, crop_path, prompt):
+    """The written explanation for a saved crop. The explainer loads on the same GPU, so the resident
+    extractor workers are stopped first (they restart on the next request)."""
+    pool.close()
+    return EX.write_explanation(crop_path, prompt)
+
+
+def write_result(out, result, final=True):
+    """Write result.json. A non-final write (explanation still pending) announces itself with the
+    PARTIAL marker so a front end can show the crop while the explainer runs."""
+    (Path(out) / "result.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if final:
+        scores = result["scores"]
+        print(f"[result] S{scores['S']} C{scores['C']} A{scores['A']} I{scores['I']}  box {result['box']}")
+    else:
+        print(PARTIAL + json.dumps({"result": str((Path(out) / "result.json").resolve())}), flush=True)
+
+
+def _crop_image(s, ex, image, aspect, mode, out, strict_aspect):
     orig, rotated = open_upright(image)
     scale, work = 1.0, image
     if rotated or max(orig.size) > MAX_SIDE:
@@ -130,18 +164,13 @@ def _crop_image(s, ex, image, aspect, mode, explain, out, strict_aspect):
         # 4. outputs
         final_orig = [x / scale for x in final]
         orig.convert("RGB").crop((int(final_orig[0]), int(final_orig[1]), int(final_orig[2]), int(final_orig[3]))).save(out / "crop.jpg", quality=95)
-        if explain:
-            ex.release_gpu()                          # the explainer (~9 GB) loads on the same GPU
-        paragraph = EX.write_explanation(out / "crop.jpg", prompt) if explain else None
         result = {
             "input": str(image), "mode": mode, "aspect": aspect,
             "box": [round(float(x), 1) for x in final_orig], "scores": scores,
             "geometry": geometry,
-            "explanation": paragraph, "panorama": None, "versions": s.versions,
+            "explanation": None, "panorama": None, "versions": s.versions,
         }
-        (out / "result.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        print(f"[result] S{scores['S']} C{scores['C']} A{scores['A']} I{scores['I']}  box {result['box']}")
-        return result
+        return result, prompt
     finally:
         if work != image:
             Path(work).unlink(missing_ok=True)

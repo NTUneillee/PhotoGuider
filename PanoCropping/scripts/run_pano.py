@@ -34,7 +34,7 @@ sys.path[:0] = [str(HERE), str(INF), str(INF / "_lib")]
 from pano import (SCAN_PANS, SCAN_TILTS, SCAN_FOV, SCAN_SIZE, FOV0, W0, H0,  # noqa: E402
                   render_view, render_hdr_view, load_hdr, select_hotspots, crop_to_camera, final_size)
 import score_views as score  # noqa: E402
-from photoguider import crop_image, Session  # noqa: E402
+from photoguider import Session, crop_only, explain_crop, write_result  # noqa: E402
 
 
 def scan(pano, coarse_dir, runner):
@@ -108,7 +108,7 @@ def run(pano_path, mode, explain, out, hdr_path=None, scan_direction=False, sess
         else:
             working, gain = render_view(pano, pan0, tilt0, FOV0, W0, H0), None
         cv2.imwrite(str(out / "working_view.png"), working)
-        fine = crop_image(out / "working_view.png", None, mode, explain, fine_dir, session=session)
+        fine, prompt = crop_only(session, out / "working_view.png", None, mode, fine_dir)
     finally:
         if own:
             session.close()
@@ -128,7 +128,10 @@ def run(pano_path, mode, explain, out, hdr_path=None, scan_direction=False, sess
         "direction": "study" if study is not None else "scan",
         "hotspots": [{"pan": round(p, 2), "tilt": round(t, 2), "score": round(float(s), 4)} for p, t, s in hotspots],
     }
-    (out / "result.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
+    write_result(out, result, final=not explain)
+    if explain:
+        result["explanation"] = explain_crop(session.pool, fine_dir / "crop.jpg", prompt)
+        write_result(out, result)
     shutil.rmtree(coarse_dir, ignore_errors=True)
     shutil.rmtree(fine_dir, ignore_errors=True)
     return result

@@ -7,6 +7,8 @@ Reads one JSON request per line on stdin and runs it with a Session kept across 
 extractor workers load their models once (the explainer still runs per request). Pipeline output
 goes to stdout as it is produced; each request ends with one line
 ``@@ACK@@{"ok": true, "result": <result.json>}`` or ``@@ACK@@{"ok": false, "error": <text>}``.
+The server prints ``@@READY@@`` once its models are loaded, and ``@@PARTIAL@@{"result": <result.json>}``
+when a request's crop is on disk but its explanation is still being written.
 
     {"image": "photo.jpg", "aspect": "16:9" | null, "mode": "fast", "explain": true, "out": "output/photo"}
     {"pano": "panorama.jpg", "mode": "fast", "explain": true, "hdr": "auto", "out": "output/pano"}
@@ -37,10 +39,17 @@ def handle(req, session):
         return {"ok": False, "error": str(exc) or traceback.format_exc()[-1500:]}
 
 
+READY = "@@READY@@"
+
+
 def main():
     sys.stdout.reconfigure(line_buffering=True)
     session = Session(verbose=True)
     try:
+        session.pool.warm()                 # the first request then pays no model loading
+        import feat_saliency
+        feat_saliency.warm()
+        print(READY, flush=True)
         for line in sys.stdin:
             if not line.strip():
                 continue

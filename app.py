@@ -29,6 +29,8 @@ ROOT = Path(__file__).resolve().parent
 MAIN_PY = ROOT / "envs" / "main" / "venv" / "bin" / "python"
 SERVE = ROOT / "inference" / "serve.py"
 ACK = "@@ACK@@"
+PARTIAL = "@@PARTIAL@@"
+READY = "@@READY@@"
 # the eight panoramas ranked highest in the 360° user study (also in PolyHaven_panoramas_100.zip)
 PANO_EXAMPLES = [ROOT / "examples" / "panoramas" / f"{s}.jpg"
                  for s in ("royal_esplanade", "golden_bay", "neurathen_rock_castle", "dam_wall", "preller_drive",
@@ -65,13 +67,26 @@ def check_gpu(mode, explain):
 _server = None
 
 
+def start_server():
+    """Start the resident pipeline server and wait until its models are loaded."""
+    global _server
+    _server = subprocess.Popen([str(MAIN_PY), str(SERVE)], cwd=ROOT, env=dict(os.environ, PYTHONUNBUFFERED="1"),
+                               stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                               text=True, bufsize=1)
+    for line in _server.stdout:
+        if line.startswith(READY):
+            return
+        print(line, end="", flush=True)
+    _server = None                                    # it died while loading; a request restarts it
+
+
 def run_streaming(request):
-    """Send one request to the resident pipeline server; yield the growing log, then raise if it failed."""
+    """Send one request to the resident pipeline server. Yields ("log", text) as output arrives and
+    ("partial", result_path) once the crop is on disk and only the explanation is pending; raises if
+    the request failed."""
     global _server
     if _server is None or _server.poll() is not None:
-        _server = subprocess.Popen([str(MAIN_PY), str(SERVE)], cwd=ROOT, env=dict(os.environ, PYTHONUNBUFFERED="1"),
-                                   stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                   text=True, bufsize=1)
+        start_server()
     _server.stdin.write(json.dumps(request) + "\n")
     _server.stdin.flush()
     lines, resp = [], None
@@ -79,8 +94,11 @@ def run_streaming(request):
         if line.startswith(ACK):
             resp = json.loads(line[len(ACK):])
             break
+        if line.startswith(PARTIAL):
+            yield "partial", json.loads(line[len(PARTIAL):])["result"]
+            continue
         lines.append(line.rstrip())
-        yield "\n".join(lines[-400:])
+        yield "log", "\n".join(lines[-400:])
     if resp is None:                                  # the server died; the next request restarts it
         _server = None
         resp = {"ok": False, "error": "\n".join(lines[-12:])}
@@ -181,6 +199,9 @@ def scores_html(scores, cam=None, two=False):
     return f'<div class="pg-card">{camera}{rows}</div>'
 
 
+WRITING_TEXT = '<div class="pg-card pg-text"><p><em>Writing the explanation…</em></p></div>'
+
+
 def explanation_html(text):
     if not text:
         return EMPTY_TEXT
@@ -196,8 +217,15 @@ def crop_photo(image_path, fixed, ratio, mode, explain):
     out = new_out_dir()
     request = {"image": image_path, "aspect": ratio if fixed else None, "mode": mode, "explain": explain, "out": str(out)}
     log = ""
-    for log in run_streaming(request):
-        yield None, None, EMPTY_SCORES, EMPTY_TEXT, gr.update(value=None, visible=False), log
+    yield None, None, EMPTY_SCORES, EMPTY_TEXT, gr.update(value=None, visible=False), log
+    for kind, payload in run_streaming(request):
+        if kind == "partial":                         # the crop is ready; the explanation is still being written
+            res = json.loads(Path(payload).read_text())
+            yield (crop_overlay(image_path, res["box"]), str(out / "crop.jpg"), scores_html(res["scores"], two=True),
+                   WRITING_TEXT, gr.update(), log)
+        else:
+            log = payload
+            yield gr.update(), gr.update(), gr.update(), gr.update(), gr.update(), log
     res = json.loads((out / "result.json").read_text())
     yield (crop_overlay(image_path, res["box"]), str(out / "crop.jpg"), scores_html(res["scores"], two=True),
            explanation_html(res["explanation"]), gr.update(value=str(out / "result.json"), visible=True), log)
@@ -211,8 +239,15 @@ def frame_pano(pano_path, mode, explain):
     # the 100 user-study panoramas are rendered from their Poly Haven HDR, as in the study
     request = {"pano": pano_path, "mode": mode, "explain": explain, "hdr": "auto", "out": str(out)}
     log = ""
-    for log in run_streaming(request):
-        yield None, None, EMPTY_SCORES, EMPTY_TEXT, gr.update(value=None, visible=False), log
+    yield None, None, EMPTY_SCORES, EMPTY_TEXT, gr.update(value=None, visible=False), log
+    for kind, payload in run_streaming(request):
+        if kind == "partial":                         # the frame is ready; the explanation is still being written
+            res = json.loads(Path(payload).read_text())
+            yield (pano_overlay(pano_path, res["panorama"]), str(out / "final.png"), scores_html(res["scores"], res["panorama"]),
+                   WRITING_TEXT, gr.update(), log)
+        else:
+            log = payload
+            yield gr.update(), gr.update(), gr.update(), gr.update(), gr.update(), log
     res = json.loads((out / "result.json").read_text())
     yield (pano_overlay(pano_path, res["panorama"]), str(out / "final.png"), scores_html(res["scores"], res["panorama"]),
            explanation_html(res["explanation"]), gr.update(value=str(out / "result.json"), visible=True), log)
@@ -463,6 +498,7 @@ def main():
     if not MAIN_PY.is_file():
         sys.exit(f"main environment not found at {MAIN_PY}; run envs/setup_envs.sh first")
     shutil.which("nvidia-smi") or print("nvidia-smi not found; GPU memory checks are skipped")
+    start_server()                                    # load the models now, not on the first request
     build().launch(server_name=a.host, server_port=a.port, share=a.share)
 
 

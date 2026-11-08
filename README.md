@@ -133,7 +133,13 @@ Panoramas run with `--hdr auto` add about 100 MB per user-study scene for its do
 
    ```bash
    bash tools/download_explainer.sh
+   envs/explainer/venv/bin/python tools/save_explainer_nf4.py   # optional, once: faster explainer loads
    ```
+
+   The explainer is Qwen2.5-VL-7B in 4-bit NF4 with the release adapter. By default every
+   explanation quantizes the 16 GB bf16 checkpoint on load; `save_explainer_nf4.py` stores the
+   quantized weights once (6 GB, `inference/models/explainer_nf4/`) so later loads read a third
+   of the data. The decoded text is identical either way.
 
 CLIP, DINOv3, InSPyReNet and the Qwen base model download on first use into their library
 caches; obtain DINOv3 access first (see [`envs/README.md`](envs/README.md)).
@@ -147,7 +153,9 @@ caches; obtain DINOv3 access first (see [`envs/README.md`](envs/README.md)).
 `app.py` runs both tasks in the browser. Requests go to one resident pipeline server
 (`inference/serve.py`) in the main environment that runs the same code as the CLI with its
 extractor models loaded once, so the web app and the CLI return identical results; requests run
-one at a time on the GPU. After installation steps 1 and 2 (plus 3 for full mode and 4 for explanations):
+one at a time on the GPU. The server loads its models when the app starts, and a request with a
+written explanation shows the crop and its assessments as soon as they are known while the
+explainer is still writing. After installation steps 1 and 2 (plus 3 for full mode and 4 for explanations):
 
 ```bash
 python3 -m venv envs/gui/venv

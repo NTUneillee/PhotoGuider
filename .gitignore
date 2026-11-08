@@ -11,3 +11,4 @@ caches
 **/outputs/
 inference/results_reproduced/
 inference/models/explainer/
+inference/models/explainer_nf4/

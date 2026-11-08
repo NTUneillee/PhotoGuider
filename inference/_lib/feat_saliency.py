@@ -57,6 +57,13 @@ def build_saliency(image_path):
     return vmix_2d, v1_2d
 
 
+def warm():
+    """Load both saliency models now instead of on the first image."""
+    from transparent_background import Remover
+    _model()
+    if "rem" not in _STATE: _STATE["rem"] = Remover()
+
+
 def build_mask(image_path):
     from transparent_background import Remover
     if "rem" not in _STATE: _STATE["rem"] = Remover()

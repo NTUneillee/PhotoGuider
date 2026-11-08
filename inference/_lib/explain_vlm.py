@@ -33,13 +33,20 @@ def load_vlm(adapter_dir):
     assert (adapter_dir / "adapter_model.safetensors").exists(), (
         f"explainer adapter not found in {adapter_dir} — run tools/download_explainer.sh")
     torch.manual_seed(1234)
-    bnb = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4",
-                             bnb_4bit_compute_dtype=torch.bfloat16,
-                             llm_int8_skip_modules=["visual", "lm_head"])
-    proc = AutoProcessor.from_pretrained(BASE_VLM, revision=revision("qwen"))
-    model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
-        BASE_VLM, revision=revision("qwen"), device_map="auto", quantization_config=bnb,
-        torch_dtype=torch.bfloat16)
+    nf4 = adapter_dir.parent / "explainer_nf4"
+    if (nf4 / "config.json").exists():
+        # the same NF4 weights saved once (tools/save_explainer_nf4.py): 6 GB to read instead of the
+        # 16 GB bf16 checkpoint quantized on every load; the decoded text is identical
+        proc = AutoProcessor.from_pretrained(nf4)
+        model = Qwen2_5_VLForConditionalGeneration.from_pretrained(nf4, device_map="auto", torch_dtype=torch.bfloat16)
+    else:
+        bnb = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4",
+                                 bnb_4bit_compute_dtype=torch.bfloat16,
+                                 llm_int8_skip_modules=["visual", "lm_head"])
+        proc = AutoProcessor.from_pretrained(BASE_VLM, revision=revision("qwen"))
+        model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
+            BASE_VLM, revision=revision("qwen"), device_map="auto", quantization_config=bnb,
+            torch_dtype=torch.bfloat16)
     model = PeftModel.from_pretrained(model, str(adapter_dir),
                                       is_trainable=False).eval()
     return {"proc": proc, "model": model,
