@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo_dark.png">
+    <img src="assets/logo.jpg" width="480" alt="PhotoGuider logo">
+  </picture>
+</p>
+
 <h1 align="center">
   PhotoGuider: Composition-Aware Cropping and 360° View Framing with Explainable Photographic Assessments
 </h1>
