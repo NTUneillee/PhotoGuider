@@ -11,7 +11,9 @@ Requests run one at a time on the GPU.
 from __future__ import annotations
 
 import argparse
+import base64
 import html
+import io
 import json
 import os
 import shutil
@@ -286,6 +288,11 @@ footer {display: none !important}
 .pg-title {padding: 0 4px 2px}
 .pg-title h1 {margin: 0; font-size: 34px; font-weight: 700; letter-spacing: -0.02em; color: var(--pg-ink)}
 .pg-title p {margin: 6px 0 0; font-size: 19px; color: var(--pg-ink2)}
+.pg-logo img {display: block; height: 46px; width: auto}
+.pg-logo .pg-logo-light {mix-blend-mode: multiply}    /* the JPG's white ground takes the page colour */
+.pg-logo .pg-logo-dark {display: none !important}
+.dark .pg-logo .pg-logo-light {display: none !important}
+.dark .pg-logo .pg-logo-dark {display: block !important}
 
 /* segmented control: tabs and radios */
 .pg-tabs .tab-wrapper {border: none !important; width: 100%; max-width: 360px; margin: 14px 0 16px 0 !important}
@@ -386,8 +393,27 @@ footer {display: none !important}
 .pg-file .file-preview-holder, .pg-file {font-size: 14px}
 """
 
-TITLE = """<div class="pg-title">
-<h1>PhotoGuider</h1>
+def _logo(name):
+    """A README logo as a PNG data URI (no static-file route needed; the Space renders it the same), cropped to its
+    content so the light (white-ground JPG) and dark (transparent PNG) versions line up and match in size."""
+    f = Path(__file__).resolve().parent / "assets" / name
+    if not f.is_file():
+        return ""
+    with Image.open(f) as im:
+        im.load()
+    if im.mode == "RGBA":
+        box = im.getchannel("A").getbbox()
+    else:
+        box = ImageOps.invert(im.convert("L")).point(lambda v: 255 if v > 16 else 0).getbbox()
+    buf = io.BytesIO(); (im.crop(box) if box else im).save(buf, "PNG")
+    return f"data:image/png;base64,{base64.b64encode(buf.getvalue()).decode()}"
+
+
+_LOGO, _LOGO_DARK = _logo("logo.jpg"), _logo("logo_dark.png")
+_HEADING = (f'<h1 class="pg-logo"><img class="pg-logo-light" src="{_LOGO}" alt="PhotoGuider">'
+            f'<img class="pg-logo-dark" src="{_LOGO_DARK or _LOGO}" alt="PhotoGuider"></h1>' if _LOGO else "<h1>PhotoGuider</h1>")
+TITLE = f"""<div class="pg-title">
+{_HEADING}
 <p>Composition-Aware Cropping and 360° View Framing with Explainable Photographic Assessments</p>
 </div>"""
 
